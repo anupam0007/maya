@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+/// Singleton row (id is always 1) holding the hero section copy.
+model HeroContent {
+  id       Int    @id @default(1)
+  headline String
+  subline  String
+}
+
+/// Singleton row (id is always 1) holding the about section copy.
+model AboutContent {
+  id    Int    @id @default(1)
+  title String
+  body  String
+}
+
+/// Singleton row (id is always 1) holding contact / brand details
+/// shown across the navbar, contact section, and footer.
+model ContactInfo {
+  id             Int    @id @default(1)
+  brand          String
+  name           String
+  role           String
+  location       String
+  email          String
+  phoneDisplay   String
+  phoneTel       String
+  whatsappNumber String
+  tagline        String
+}
+
+/// A featured project shown in the "Work" section.
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  url         String
+  image       String
+  tags        String[]
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// A single skill/tech entry shown in the skills grid.
+/// `icon` is the name of a lucide-react icon component.
+model Skill {
+  id    String @id @default(cuid())
+  label String
+  icon  String
+  order Int    @default(0)
+}
