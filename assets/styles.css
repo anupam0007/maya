@@ -994,6 +994,8 @@ ul,ol{ list-style:none; padding:0; }
 .done-row{ display:grid; grid-template-columns:auto 1fr; gap:11px; font-size:.87rem; color:var(--ink-2); align-items:start; }
 .done-row svg{ width:17px; height:17px; color:var(--clay); margin-top:.15em; flex:none; }
 .done-row b{ color:var(--ink); font-weight:620; }
+/* a class rule with display:grid outranks the UA sheet's [hidden] */
+.done-row[hidden]{ display:none; }
 /* delivery state, one row per recipient */
 .done-row .ico{ color:var(--forest); }
 .done-row.is-pending{ color:var(--ink-3); }
