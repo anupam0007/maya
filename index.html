@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maya Studio — Websites, Invitations, Brochures & Video</title>
+<meta name="description" content="Maya is a Bengaluru creative studio run by two friends. Websites, e-commerce, brochures, digital invitations, video editing and logo design. Book a free 30-minute call — Google Meet link sent instantly.">
+<meta name="theme-color" content="#F2ECE1">
+<meta property="og:title" content="Maya Studio — design that people remember">
+<meta property="og:description" content="Websites, invitations, brochures, video and logos, made in Bengaluru. Book a free call, Monday to Saturday.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23F2ECE1'/%3E%3Cpath d='M14 46V18l18 20 18-20v28' fill='none' stroke='%23C0543A' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='43' r='3.6' fill='%23D2A24C'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="is-loading">
+
+<!-- ============ PRELOADER ============
+     Entirely CSS-driven so it appears on the first frame, with no wait for
+     the bundle. The script only takes it away again. -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-in">
+    <svg class="loader-mark" viewBox="0 0 120 100" width="74" height="62" aria-hidden="true">
+      <path d="M14 88V12l46 52 46-52v76" fill="none" stroke="#D2A24C" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="60" cy="80" r="8" fill="#C0543A"/>
+    </svg>
+    <div class="loader-word"><span>m</span><span>a</span><span>y</span><span>a</span></div>
+  </div>
+  <div class="loader-bar"><span></span></div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><i></i><b></b></div>
+<div class="scene-tip" id="sceneTip" aria-hidden="true"></div>
+<canvas id="webgl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a href="#top" class="brand" aria-label="Maya home">
+    <svg viewBox="0 0 120 100" width="32" height="27" aria-hidden="true"><path d="M14 88V12l46 52 46-52v76" fill="none" stroke="#C0543A" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="80" r="8" fill="#D2A24C"/></svg>
+    <span>Maya</span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Main">
+    <a href="#services">Services</a>
+    <a href="#story">Our story</a>
+    <a href="#work">What we make</a>
+    <a href="#process">How it works</a>
+    <a href="#team">Team</a>
+    <a href="#book">Book a call</a>
+  </nav>
+  <button class="btn btn-primary btn-sm magnetic" data-open-inquiry>Book a free call</button>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-inner wrap">
+    <p class="hero-kicker reveal-load"><span class="live"></span> Taking new projects for December</p>
+    <h1 class="hero-title" aria-label="We design the things people remember.">
+      <span class="line"><span class="line-in">We design</span></span>
+      <span class="line"><span class="line-in">the things</span></span>
+      <span class="line"><span class="line-in">people <em>remember.</em></span></span>
+    </h1>
+    <p class="hero-sub reveal-load">Maya is a Bengaluru studio started by two friends. Anupam designs websites, brochures and invitations. Samarth edits video and designs logos. One team, one conversation, everything your brand needs.</p>
+    <div class="hero-cta reveal-load">
+      <button class="btn btn-primary btn-lg magnetic" data-open-inquiry>
+        Book a free call
+        <svg class="arw" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-lg" href="#story">
+        <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 8.2l6 3.8-6 3.8z" fill="currentColor"/></svg>
+        Watch our story
+      </a>
+    </div>
+    <p class="hero-note reveal-load"><span class="live"></span> Monday to Saturday, 9 am – 6 pm · Google Meet link sent the moment you book</p>
+  </div>
+
+  <div class="scene-hint reveal-load" aria-hidden="true">
+    <svg width="15" height="15" viewBox="0 0 24 24"><path d="M6 12h12M9 8l-4 4 4 4M15 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Drag to spin · click a card
+  </div>
+
+  <div class="hero-foot wrap reveal-load">
+    <div class="hero-tags">
+      <span>Websites</span><span>E-commerce</span><span>Brochures</span><span>Invitations</span><span>Video</span><span>Logos</span>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"><i></i>Scroll</div>
+  </div>
+</section>
+
+<!-- ============ NUMBERS ============ -->
+<section class="numbers" id="numbers" aria-label="Studio in numbers">
+  <div class="wrap">
+    <div class="numbers-grid">
+      <div class="num">
+        <div class="num-val"><span class="odo" data-target="30">0</span><i>+</i></div>
+        <p>Websites designed and launched, from bakeries to full online stores</p>
+      </div>
+      <div class="num">
+        <div class="num-val"><span class="odo" data-target="100">0</span><i>+</i></div>
+        <p>Invitations for weddings, birthdays and housewarmings</p>
+      </div>
+      <div class="num">
+        <div class="num-val"><span class="odo" data-target="60">0</span><i>+</i></div>
+        <p>Brochures, catalogues and menu cards, for print and WhatsApp</p>
+      </div>
+      <div class="num">
+        <div class="num-val"><span class="odo" data-target="100" data-live>0</span><i>+</i></div>
+        <p><span class="live"></span>Happy clients and counting</p>
+      </div>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee">
+      <span>Business websites</span><b></b><span>Online stores</span><b></b><span>Wedding invitations</span><b></b><span>Brochures</span><b></b><span>Reels &amp; edits</span><b></b><span>Logo design</span><b></b><span>Video invitations</span><b></b><span>Menu cards</span><b></b>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY ============ -->
+<section class="story" id="story">
+  <div class="story-pin">
+    <div class="wrap story-grid">
+      <div class="story-copy">
+        <p class="eyebrow on-dark">Our story</p>
+        <h2 class="h2" data-words>From an IT desk to a <span class="hl">studio of our own.</span></h2>
+        <p class="lead">Maya didn't start in a boardroom. It started with a kid who wanted to know how websites are made — and kept that question alive through engineering college, an IT job, and late nights designing for friends.</p>
+        <ol class="chapters" id="chapters">
+          <li data-t="0"><span class="ch-n">01</span><div><h3>A curious kid</h3><p>A glowing screen and one question: how is the web made?</p></div></li>
+          <li data-t="6"><span class="ch-n">02</span><div><h3>Computer Science Engineering</h3><p>A BE in Computer Science to learn the craft properly.</p></div></li>
+          <li data-t="12"><span class="ch-n">03</span><div><h3>The IT years</h3><p>Three and a half years of production support, tickets and night shifts.</p></div></li>
+          <li data-t="18"><span class="ch-n">04</span><div><h3>The spark</h3><p>Every evening went into designing websites and invitations.</p></div></li>
+          <li data-t="25"><span class="ch-n">05</span><div><h3>Passion over paycheck</h3><p>He left IT to do this full time — and Samarth joined him.</p></div></li>
+        </ol>
+      </div>
+      <div class="story-stage">
+        <div class="video-frame" id="videoFrame">
+          <video id="storyVideo" src="assets/video/maya-story.mp4" poster="assets/video/maya-story-poster.jpg" muted loop playsinline preload="metadata"></video>
+          <div class="video-ui">
+            <button class="vbtn" id="vPlay" aria-label="Pause video"><svg viewBox="0 0 24 24" width="17" height="17"><path class="i-pause" d="M7.5 5h3v14h-3zM13.5 5h3v14h-3z" fill="currentColor"/><path class="i-play" d="M8 5l11 7-11 7z" fill="currentColor"/></svg></button>
+            <button class="vbtn" id="vSound" aria-label="Turn sound on"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="i-wave" d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="i-mute" d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></button>
+            <div class="vbar" id="vBar"><span id="vProgress"></span></div>
+            <div class="vtime" id="vTime">0:00 / 0:40</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What we do</p>
+      <h2 class="h2" data-words>Everything your brand needs, made by <span class="hl">two people who care.</span></h2>
+      <p class="lead">Tap any service to see what's included. Each one has a clear owner, so you always know who's working on your project.</p>
+    </div>
+    <div class="svc-list" id="svcList">
+
+      <article class="svc" data-svc="website">
+        <button class="svc-row" aria-expanded="false">
+          <span class="svc-idx">01</span>
+          <span class="svc-name">Website design</span>
+          <span class="svc-owner"><i class="av av-a">A</i>Anupam</span>
+          <span class="svc-plus" aria-hidden="true"></span>
+        </button>
+        <div class="svc-body"><div class="svc-body-in"><div class="svc-pad">
+          <div>
+            <p>Fast, mobile-first websites that make your business look as good online as it is in person. Every site is built from scratch around your brand — no recycled templates.</p>
+            <button class="btn btn-ghost btn-sm svc-cta" data-open-inquiry="website">Ask about a website</button>
+          </div>
+          <ul><li>Business and portfolio websites</li><li>Restaurant and bakery sites with WhatsApp ordering</li><li>Customer reviews, galleries and maps</li><li>SEO basics, hosting setup and launch</li></ul>
+        </div></div></div>
+      </article>
+
+      <article class="svc" data-svc="website">
+        <button class="svc-row" aria-expanded="false">
+          <span class="svc-idx">02</span>
+          <span class="svc-name">Online stores</span>
+          <span class="svc-owner"><i class="av av-a">A</i>Anupam</span>
+          <span class="svc-plus" aria-hidden="true"></span>
+        </button>
+        <div class="svc-body"><div class="svc-body-in"><div class="svc-pad">
+          <div>
+            <p>Sell online with a store that's simple for your customers and simple for you to run. Add products, update offers and track orders from your own dashboard.</p>
+            <button class="btn btn-ghost btn-sm svc-cta" data-open-inquiry="website">Ask about a store</button>
+          </div>
+          <ul><li>Product catalogues with 100+ items</li><li>Cart, wishlist and daily offers</li><li>Admin dashboard you can manage yourself</li><li>Store locations and Instagram feed</li></ul>
+        </div></div></div>
+      </article>
+
+      <article class="svc" data-svc="brochure">
+        <button class="svc-row" aria-expanded="false">
+          <span class="svc-idx">03</span>
+          <span class="svc-name">Brochures &amp; catalogues</span>
+          <span class="svc-owner"><i class="av av-a">A</i>Anupam</span>
+          <span class="svc-plus" aria-hidden="true"></span>
+        </button>
+        <div class="svc-body"><div class="svc-body-in"><div class="svc-pad">
+          <div>
+            <p>Clean, well-spaced brochures that explain what you do in seconds. Delivered print-ready and as a lightweight PDF you can share on WhatsApp.</p>
+            <button class="btn btn-ghost btn-sm svc-cta" data-open-inquiry="brochure">Ask about a brochure</button>
+          </div>
+          <ul><li>Business and service brochures</li><li>Product catalogues and price lists</li><li>Menu cards for cafés and bakeries</li><li>Class and workshop flyers</li></ul>
+        </div></div></div>
+      </article>
+
+      <article class="svc" data-svc="invitation">
+        <button class="svc-row" aria-expanded="false">
+          <span class="svc-idx">04</span>
+          <span class="svc-name">Digital invitations</span>
+          <span class="svc-owner"><i class="av av-a">A</i>Anupam</span>
+          <span class="svc-plus" aria-hidden="true"></span>
+        </button>
+        <div class="svc-body"><div class="svc-body-in"><div class="svc-pad">
+          <div>
+            <p>Invitations your family will forward with pride. Designed in Kannada, English or both, as images, PDFs or animated video invites.</p>
+            <button class="btn btn-ghost btn-sm svc-cta" data-open-inquiry="invitation">Ask about an invitation</button>
+          </div>
+          <ul><li>Weddings and engagements</li><li>Birthdays and naming ceremonies</li><li>Housewarming (gruhapravesha)</li><li>Video invites with music, edited by Samarth</li></ul>
+        </div></div></div>
+      </article>
+
+      <article class="svc" data-svc="video">
+        <button class="svc-row" aria-expanded="false">
+          <span class="svc-idx">05</span>
+          <span class="svc-name">Video editing</span>
+          <span class="svc-owner"><i class="av av-s">S</i>Samarth</span>
+          <span class="svc-plus" aria-hidden="true"></span>
+        </button>
+        <div class="svc-body"><div class="svc-body-in"><div class="svc-pad">
+          <div>
+            <p>Edits that hold attention from the first second. From Instagram reels to event highlights, Samarth cuts, colours and scores your footage.</p>
+            <button class="btn btn-ghost btn-sm svc-cta" data-open-inquiry="video">Ask about video</button>
+          </div>
+          <ul><li>Reels and short-form edits</li><li>Wedding and event highlight films</li><li>Photo and video collages</li><li>AI-assisted video and motion design</li></ul>
+        </div></div></div>
+      </article>
+
+      <article class="svc" data-svc="logo">
+        <button class="svc-row" aria-expanded="false">
+          <span class="svc-idx">06</span>
+          <span class="svc-name">Logo &amp; brand identity</span>
+          <span class="svc-owner"><i class="av av-s">S</i>Samarth</span>
+          <span class="svc-plus" aria-hidden="true"></span>
+        </button>
+        <div class="svc-body"><div class="svc-body-in"><div class="svc-pad">
+          <div>
+            <p>A logo that works everywhere — on your shop board, your Instagram profile and your packaging. You get the full file set and simple brand colours to use.</p>
+            <button class="btn btn-ghost btn-sm svc-cta" data-open-inquiry="logo">Ask about a logo</button>
+          </div>
+          <ul><li>Logo concepts and refinements</li><li>Colour palette and fonts</li><li>Social media profile kit</li><li>Files for print and web</li></ul>
+        </div></div></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHOWCASE ============ -->
+<section class="work" id="work">
+  <div class="work-pin">
+    <div class="wrap work-head">
+      <p class="eyebrow">Selected work</p>
+      <h2 class="h2" data-words>What we make.</h2>
+      <p class="lead">A look at the kinds of things that leave our desks every week.</p>
+    </div>
+    <!-- On a phone this is the scroller; on a laptop GSAP moves the track. -->
+    <div class="work-scroll" id="workScroll">
+    <div class="work-track" id="workTrack">
+
+      <figure class="piece">
+        <div class="mock mock-browser tilt">
+          <div class="mb-bar"><i></i><i></i><i></i><span>yourbusiness.in</span></div>
+          <div class="mb-body">
+            <div class="mb-hero"><div><b></b><b class="s"></b><em>Order now</em></div><div class="mb-img"></div></div>
+            <div class="mb-cards"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+        <figcaption><h3>Business websites</h3><p>Built to load fast and turn visitors into calls and WhatsApp orders.</p></figcaption>
+      </figure>
+
+      <figure class="piece">
+        <div class="mock mock-invite tilt">
+          <div class="inv-border">
+            <p class="inv-small">Together with their families</p>
+            <p class="inv-names">Arjun<span>&amp;</span>Meera</p>
+            <p class="inv-small">request the pleasure of your company</p>
+            <div class="inv-rule"></div>
+            <p class="inv-date">Sunday, 14 February</p>
+            <p class="inv-kn">ಶುಭ ವಿವಾಹ</p>
+          </div>
+        </div>
+        <figcaption><h3>Wedding invitations</h3><p>Traditional or modern, in Kannada and English, ready to share.</p></figcaption>
+      </figure>
+
+      <figure class="piece">
+        <div class="mock mock-brochure tilt">
+          <div class="br-panel br-1"><b></b><b class="s"></b><b class="s"></b><div class="br-img"></div></div>
+          <div class="br-panel br-2"><div class="br-badge">M</div><b></b><b class="s"></b></div>
+          <div class="br-panel br-3"><b></b><span></span><span></span><span></span></div>
+        </div>
+        <figcaption><h3>Brochures</h3><p>Tri-folds, catalogues and menus with room to breathe.</p></figcaption>
+      </figure>
+
+      <figure class="piece">
+        <div class="mock mock-phone tilt">
+          <div class="ph-screen">
+            <div class="ph-top"><i></i>Reel</div>
+            <div class="ph-play"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5l11 7-11 7z" fill="#fff"/></svg></div>
+            <div class="ph-cap"><b></b><b class="s"></b></div>
+            <div class="ph-bar"><span></span></div>
+          </div>
+        </div>
+        <figcaption><h3>Reels &amp; video edits</h3><p>Short-form edits, highlight films and collages by Samarth.</p></figcaption>
+      </figure>
+
+      <figure class="piece">
+        <div class="mock mock-logo tilt">
+          <div class="lg-grid">
+            <div class="lg-tile lg-1"><svg viewBox="0 0 60 60" width="40" height="40"><circle cx="30" cy="30" r="19" fill="none" stroke="#FBF7F0" stroke-width="5"/><circle cx="30" cy="30" r="6" fill="#D2A24C"/></svg></div>
+            <div class="lg-tile lg-2"><svg viewBox="0 0 60 60" width="40" height="40"><path d="M12 46L30 13l18 33z" fill="#27392C"/></svg></div>
+            <div class="lg-tile lg-3"><span>Kavya</span></div>
+            <div class="lg-tile lg-4"><div class="sw"><i></i><i></i><i></i><i></i></div></div>
+          </div>
+        </div>
+        <figcaption><h3>Logos &amp; brand kits</h3><p>Marks, colours and type that make a small brand look established.</p></figcaption>
+      </figure>
+
+      <figure class="piece">
+        <div class="mock mock-store tilt">
+          <div class="st-head"><b></b><span class="st-cart">Cart · 2</span></div>
+          <div class="st-grid">
+            <div class="st-item"><div class="st-img a"></div><b></b><em>₹2,499</em></div>
+            <div class="st-item"><div class="st-img b"></div><b></b><em>₹1,899</em></div>
+            <div class="st-item"><div class="st-img c"></div><b></b><em>₹3,250</em></div>
+            <div class="st-item"><div class="st-img d"></div><b></b><em>₹999</em></div>
+          </div>
+        </div>
+        <figcaption><h3>Online stores</h3><p>Catalogues, carts and an admin panel you can run yourself.</p></figcaption>
+      </figure>
+
+    </div>
+    </div>
+    <div class="work-rail" aria-hidden="true">
+      <p><span class="rail-desk">Drag or scroll</span><span class="rail-mob">Swipe to see more</span></p>
+      <div class="work-rail-bar"><span id="workRail"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="process" id="process">
+  <div class="wrap process-grid">
+    <div class="process-intro">
+      <p class="eyebrow">The process</p>
+      <h2 class="h2" data-words>How it works.</h2>
+      <p class="lead">No jargon, no surprises. Here's exactly what happens after you book a call with us.</p>
+      <button class="btn btn-primary magnetic" data-open-inquiry>
+        Book a free call
+        <svg class="arw" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <ol class="steps" id="steps">
+      <li class="steps-line" aria-hidden="true"><span id="stepsFill"></span></li>
+      <li class="step"><span class="step-n">01</span><div><h3>Pick a slot</h3><p>Choose a day and time that suits you, Monday to Saturday between 9 am and 6 pm. Takes less than two minutes.</p><span class="step-time">Takes 2 minutes</span></div></li>
+      <li class="step"><span class="step-n">02</span><div><h3>Get your Google Meet link</h3><p>The moment you confirm, a calendar invite with your Google Meet link lands in your inbox — and in ours. We also call you within the hour.</p><span class="step-time">Instant</span></div></li>
+      <li class="step"><span class="step-n">03</span><div><h3>We talk, then we quote</h3><p>On the call we understand your goals, then send a clear quote with what's included and when you'll get it.</p><span class="step-time">Within 24 hours</span></div></li>
+      <li class="step"><span class="step-n">04</span><div><h3>First design</h3><p>You see a real first draft — a homepage, an invitation, a brochure spread or a rough cut — not just a moodboard.</p><span class="step-time">2 to 7 days</span></div></li>
+      <li class="step"><span class="step-n">05</span><div><h3>Refine together</h3><p>Share your changes on WhatsApp or a call. We revise until it feels right to you and your family or customers.</p><span class="step-time">Revisions included</span></div></li>
+      <li class="step"><span class="step-n">06</span><div><h3>Launch and handover</h3><p>Your site goes live, or you receive final files for print, WhatsApp and Instagram. We stay a message away after launch.</p><span class="step-time">Support after delivery</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ BOOKING ============ -->
+<section class="book" id="book">
+  <div class="wrap">
+    <div class="book-head">
+      <p class="eyebrow on-dark">Book a call</p>
+      <h2 class="h2" data-words>Pick a time. Your <span class="hl">Google Meet link</span> is sent the second you confirm.</h2>
+      <p class="lead">Monday to Saturday, 9:00 am to 6:00 pm IST. Choose a slot below and we'll email the meeting link to you straight away — and we'll call you within the hour to say hello.</p>
+      <div class="book-trust">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg> Meet link emailed instantly</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> We call within the hour</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg> Free 30 minutes, no obligation</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg> Kannada or English</span>
+      </div>
+    </div>
+
+    <div class="book-panel">
+      <div class="book-main">
+        <div class="bk-top">
+          <div class="bk-month" id="bkMonth">—</div>
+          <div class="bk-arrows">
+            <button type="button" id="bkPrev" aria-label="Earlier dates"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" id="bkNext" aria-label="Later dates"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+        <div class="bk-days" id="bkDays" role="group" aria-label="Choose a date"></div>
+
+        <div class="bk-divider"></div>
+
+        <div class="bk-slots-head">
+          <h3 id="bkSlotsFor">Available times</h3>
+          <p>All times IST (Asia/Kolkata) · 30 minutes</p>
+        </div>
+        <div class="bk-slots" id="bkSlots" role="group" aria-label="Choose a time"></div>
+        <p class="bk-note">We hold slots Monday to Saturday, 9:00 am – 6:00 pm. Sundays we're off. Greyed-out times are already taken.</p>
+      </div>
+
+      <aside class="book-side">
+        <p class="bk-side-label">Your slot</p>
+        <div class="bk-pick is-empty" id="bkPick">Choose a day and a time to continue.</div>
+        <ul class="bk-perks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg><span>A <b>Google Meet link</b> is emailed to you the moment you confirm — and to our studio inbox too.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5c0 8 6 14 14 14l2-3.5-4-2-2 2a14 14 0 0 1-6.5-6.5l2-2-2-4z"/></svg><span>We <b>call you within the hour</b> on the number you give us, so nothing waits.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>Need to move it? Reply to the invite and we'll <b>reschedule, no fuss</b>.</span></li>
+        </ul>
+        <button class="btn btn-primary btn-lg magnetic" id="bkConfirm" disabled>
+          Confirm this slot
+          <svg class="arw" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="bk-side-foot">Takes 2 minutes · we only ask for what we need</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The studio</p>
+      <h2 class="h2" data-words>Two friends. One studio.</h2>
+      <p class="lead">We started Maya because we were already doing this for friends and family every weekend. Now it's what we do every day.</p>
+    </div>
+    <div class="team-grid">
+      <article class="person tilt-soft">
+        <div class="person-mono mono-a" aria-hidden="true">AG</div>
+        <div class="person-info">
+          <h3>Anupam Gowda</h3>
+          <p class="role">Co-founder · design &amp; web</p>
+          <p>Computer Science engineer who spent three and a half years in IT production support before choosing design full time. He brings an engineer's attention to detail to every layout.</p>
+          <ul class="person-tags"><li>Website design</li><li>Online stores</li><li>Brochures</li><li>Invitations</li></ul>
+        </div>
+      </article>
+      <article class="person tilt-soft">
+        <div class="person-mono mono-s" aria-hidden="true">S</div>
+        <div class="person-info">
+          <h3>Samarth</h3>
+          <p class="role">Co-founder · video &amp; identity</p>
+          <p>The storyteller of the team. Samarth turns raw footage into edits people watch twice, and gives brands a logo and look they can grow into.</p>
+          <ul class="person-tags"><li>Video editing</li><li>Video collages</li><li>Motion design</li><li>Logo design</li></ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="why">
+  <div class="wrap">
+    <div class="why-grid">
+      <div class="why-item"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="20" cy="20" r="16"/><path d="M20 11v9.4l6.4 3.6" stroke-linecap="round"/></svg><h3>Replies within a day</h3><p>Usually within a few hours. You'll never chase us for an update.</p></div>
+      <div class="why-item"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 10h28v18H18l-8 6v-6H6z"/></svg><h3>Kannada and English</h3><p>Talk to us in the language you're comfortable with. We design in both.</p></div>
+      <div class="why-item"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="3"/><rect x="22" y="6" width="12" height="12" rx="3"/><rect x="6" y="22" width="12" height="12" rx="3"/><rect x="22" y="22" width="12" height="12" rx="3" fill="currentColor"/></svg><h3>All in one place</h3><p>Website, brochure, invitation, video and logo from the same team, so everything matches.</p></div>
+      <div class="why-item"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21l8 8 16-17"/></svg><h3>Revisions included</h3><p>We refine until you're happy. Clear quotes, no hidden charges.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap faq-grid">
+    <div>
+      <p class="eyebrow">FAQ</p>
+      <h2 class="h2" data-words>Questions clients ask.</h2>
+    </div>
+    <div class="faq-list">
+      <details><summary>How long does a project take?</summary><div><p>Invitations and logos usually take 2–5 days. Brochures take 3–7 days. A business website takes 1–3 weeks, and a full online store 4–8 weeks, depending on the number of products and features.</p></div></details>
+      <details><summary>How much does it cost?</summary><div><p>It depends on what you need. Book a free call with a few details and we'll follow up with a clear, itemised quote within a day — no obligation.</p></div></details>
+      <details><summary>What happens on the call?</summary><div><p>It's a relaxed 30 minutes on Google Meet. You tell us what you're planning, we ask a few questions and show you similar work we've done. You'll leave with a clear idea of timeline and cost. No sales script.</p></div></details>
+      <details><summary>Can you design invitations in Kannada?</summary><div><p>Yes. We design invitations in Kannada, English or both, as images, PDFs or animated video invitations with music.</p></div></details>
+      <details><summary>Can you redesign my existing website?</summary><div><p>Yes. We can refresh the design, speed it up, make it mobile-friendly, or rebuild it completely while keeping your content.</p></div></details>
+      <details><summary>Do you help after the project is delivered?</summary><div><p>Yes. For websites we help with updates, fixes and small changes after launch. For designs, you can always come back for new versions or sizes.</p></div></details>
+      <details><summary>Do you work with clients outside Bengaluru?</summary><div><p>Yes. Everything can be done over Google Meet, WhatsApp, calls and email, so we work with clients across India and abroad.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-card">
+      <h2 class="contact-title">Have something in mind?<br>Let's make it <em>beautiful.</em></h2>
+      <p class="lead">Book a free 30-minute call, or just send us a message. Either way you'll hear back the same day.</p>
+      <div class="contact-actions">
+        <button class="btn btn-primary btn-lg magnetic" data-open-inquiry>
+          Book a free call
+          <svg class="arw" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <a class="btn btn-ghost btn-lg" id="waDirect" href="#" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+      <div class="contact-lines">
+        <a href="tel:+917204215343" id="telLink"><span>Call</span>+91 72042 15343</a>
+        <a href="mailto:anupamgowda1999@gmail.com" id="mailLink"><span>Email</span>anupamgowda1999@gmail.com</a>
+        <p><span>Studio</span>Bengaluru, India</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <svg viewBox="0 0 120 100" width="42" height="35" aria-hidden="true"><path d="M14 88V12l46 52 46-52v76" fill="none" stroke="#D2A24C" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="80" r="8" fill="#C0543A"/></svg>
+      <p>Maya Studio. Websites, invitations, brochures, video and logos — designed in Bengaluru by Anupam and Samarth.</p>
+    </div>
+    <nav class="footer-links" aria-label="Footer"><a href="#services">Services</a><a href="#story">Our story</a><a href="#work">What we make</a><a href="#process">How it works</a><a href="#team">Team</a><a href="#book">Book a call</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></nav>
+    <p class="footer-copy">© <span id="year"></span> Maya Studio</p>
+  </div>
+  <div class="footer-word" aria-hidden="true">maya</div>
+</footer>
+
+<a class="fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+  <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 00-11.2 19.6L3 29l6.6-1.7A13 13 0 1016 3zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1116 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a8.7 8.7 0 01-4.3-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.1-1.2 2.8 1.2 3.3 1.4 3.5 2.4 3.7 5.9 5.2c2.2.9 3 1 4.1.8.7-.1 1.9-.8 2.2-1.5s.3-1.4.2-1.5-.3-.2-.6-.4z"/></svg>
+</a>
+
+<aside class="nudge" id="nudge" role="dialog" aria-labelledby="nudgeTitle" aria-hidden="true">
+  <button class="nudge-x" id="nudgeClose" aria-label="Close">×</button>
+  <div class="nudge-icons" aria-hidden="true"><span class="ni ni-1"></span><span class="ni ni-2"></span><span class="ni ni-3"></span></div>
+  <h3 id="nudgeTitle">Planning a website, invite or brochure?</h3>
+  <p>Book a free 30-minute call. Google Meet link sent instantly.</p>
+  <button class="btn btn-primary btn-sm" data-open-inquiry>Pick a time</button>
+</aside>
+
+<!-- ============ BOOKING / INQUIRY MODAL ============ -->
+<div class="modal" id="inquiry" role="dialog" aria-modal="true" aria-labelledby="inqTitle" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" data-lenis-prevent>
+    <button class="modal-x" data-close aria-label="Close form">×</button>
+    <div class="inq-progress"><span id="inqBar"></span></div>
+    <form id="inqForm" novalidate>
+
+      <!-- step 1 — service -->
+      <fieldset class="inq-step is-active" data-step="1">
+        <legend id="inqTitle" class="inq-title">What can we create for you?</legend>
+        <p class="inq-hint">Pick one or more. You can add details in the next step.</p>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="service" value="website"><span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="26" height="20" rx="3"/><path d="M3 11h26"/></svg>Website or online store</span></label>
+          <label class="chip"><input type="checkbox" name="service" value="invitation"><span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="3" width="18" height="26" rx="2"/><path d="M12 12h8M12 17h8M14 22h4" stroke-linecap="round"/></svg>Invitation</span></label>
+          <label class="chip"><input type="checkbox" name="service" value="brochure"><span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 7l9-3 8 3 9-3v21l-9 3-8-3-9 3z"/><path d="M12 4v21M20 7v21"/></svg>Brochure or catalogue</span></label>
+          <label class="chip"><input type="checkbox" name="service" value="video"><span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="26" height="18" rx="3"/><path d="M13 12l7 4-7 4z" fill="currentColor" stroke="none"/></svg>Video editing</span></label>
+          <label class="chip"><input type="checkbox" name="service" value="logo"><span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="16" cy="16" r="12"/><path d="M10 21l6-11 6 11z"/></svg>Logo design</span></label>
+          <label class="chip"><input type="checkbox" name="service" value="advice"><span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 4v3M16 25v3M4 16h3M25 16h3M8 8l2 2M22 22l2 2M24 8l-2 2M10 22l-2 2"/><circle cx="16" cy="16" r="5"/></svg>Not sure yet — advise me</span></label>
+        </div>
+        <p class="inq-err" id="err1" role="alert"></p>
+      </fieldset>
+
+      <!-- step 2 — details -->
+      <fieldset class="inq-step" data-step="2">
+        <legend class="inq-title">Tell us a little more.</legend>
+        <p class="inq-hint">Rough answers are fine — we'll go through it properly on the call.</p>
+        <div class="inq-dyn">
+          <div class="dyn" data-for="website">
+            <h4>Website</h4>
+            <div class="row2">
+              <label class="fld"><span>Type of website</span><select name="web_type"><option>Business website</option><option>Online store (e-commerce)</option><option>Restaurant / bakery with ordering</option><option>Portfolio</option><option>Redesign my current site</option></select></label>
+              <label class="fld"><span>Do you have a logo and photos?</span><select name="web_assets"><option>Yes, both</option><option>Only a logo</option><option>Only photos</option><option>Not yet</option></select></label>
+            </div>
+          </div>
+          <div class="dyn" data-for="invitation">
+            <h4>Invitation</h4>
+            <div class="row2">
+              <label class="fld"><span>Occasion</span><select name="inv_type"><option>Wedding</option><option>Engagement</option><option>Birthday</option><option>Housewarming</option><option>Naming ceremony</option><option>Other</option></select></label>
+              <label class="fld"><span>Event date</span><input type="date" name="inv_date"></label>
+              <label class="fld"><span>Language</span><select name="inv_lang"><option>Kannada and English</option><option>Kannada</option><option>English</option><option>Other</option></select></label>
+              <label class="fld"><span>Format</span><select name="inv_format"><option>Image / PDF</option><option>Video invitation</option><option>Both</option></select></label>
+            </div>
+          </div>
+          <div class="dyn" data-for="brochure">
+            <h4>Brochure</h4>
+            <div class="row2">
+              <label class="fld"><span>What is it for?</span><select name="br_type"><option>Business / services</option><option>Product catalogue</option><option>Menu card</option><option>Class or event flyer</option></select></label>
+              <label class="fld"><span>Pages</span><select name="br_pages"><option>1–2 pages</option><option>3–4 pages</option><option>5–8 pages</option><option>More than 8</option></select></label>
+            </div>
+          </div>
+          <div class="dyn" data-for="video">
+            <h4>Video</h4>
+            <div class="row2">
+              <label class="fld"><span>Type of video</span><select name="vid_type"><option>Instagram reels</option><option>Event highlight film</option><option>Photo / video collage</option><option>Promo or ad video</option><option>Video invitation</option></select></label>
+              <label class="fld"><span>Length</span><select name="vid_len"><option>Under 30 seconds</option><option>30–90 seconds</option><option>2–5 minutes</option><option>Longer</option></select></label>
+            </div>
+          </div>
+          <div class="dyn" data-for="logo">
+            <h4>Logo</h4>
+            <div class="row2">
+              <label class="fld"><span>Business name</span><input type="text" name="logo_name" placeholder="e.g. Kavya Bakes"></label>
+              <label class="fld"><span>Style you like</span><select name="logo_style"><option>Modern and minimal</option><option>Traditional</option><option>Playful</option><option>Not sure yet</option></select></label>
+            </div>
+          </div>
+        </div>
+        <div class="row2">
+          <label class="fld"><span>Budget</span><select name="budget"><option>Not sure yet</option><option>Under ₹5,000</option><option>₹5,000 – ₹15,000</option><option>₹15,000 – ₹40,000</option><option>Above ₹40,000</option></select></label>
+          <label class="fld"><span>When do you need it?</span><select name="timeline"><option>Flexible</option><option>Within a week</option><option>Within 2 weeks</option><option>Within a month</option></select></label>
+        </div>
+        <label class="fld fld-full"><span>Your idea, in a few words</span><textarea name="message" rows="3" placeholder="e.g. A bakery website where customers can order cakes on WhatsApp"></textarea></label>
+      </fieldset>
+
+      <!-- step 3 — contact details (email required) -->
+      <fieldset class="inq-step" data-step="3">
+        <legend class="inq-title">Where should we send the invite?</legend>
+        <p class="inq-hint">Your Google Meet link and calendar invite go to this email address, so please double-check it.</p>
+        <div class="row2">
+          <label class="fld"><span>Your name <i class="req">*</i></span><input type="text" name="name" autocomplete="name" required placeholder="Full name"></label>
+          <label class="fld"><span>Email <i class="req">*</i></span><input type="email" name="email" autocomplete="email" inputmode="email" required placeholder="you@example.com"></label>
+          <label class="fld"><span>Phone / WhatsApp <i class="req">*</i></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="10-digit number"></label>
+          <label class="fld"><span>City</span><input type="text" name="city" autocomplete="address-level2" placeholder="Bengaluru"></label>
+        </div>
+        <label class="fld fld-full"><span>Best way to reach you between calls</span>
+          <div class="seg"><label><input type="radio" name="pref" value="WhatsApp" checked><span>WhatsApp</span></label><label><input type="radio" name="pref" value="Call"><span>Call</span></label><label><input type="radio" name="pref" value="Email"><span>Email</span></label></div>
+        </label>
+        <p class="inq-err" id="err3" role="alert"></p>
+      </fieldset>
+
+      <!-- step 4 — slot -->
+      <fieldset class="inq-step" data-step="4">
+        <legend class="inq-title">Pick a time that suits you.</legend>
+        <p class="inq-hint">Monday to Saturday, 9:00 am – 6:00 pm IST. 30 minutes on Google Meet, free of charge.</p>
+        <div class="inq-book">
+          <div class="bk-top">
+            <div class="bk-month" id="mkMonth">—</div>
+            <div class="bk-arrows">
+              <button type="button" id="mkPrev" aria-label="Earlier dates"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button type="button" id="mkNext" aria-label="Later dates"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+          </div>
+          <div class="bk-days" id="mkDays" role="group" aria-label="Choose a date"></div>
+          <div class="bk-divider"></div>
+          <div class="bk-slots-head">
+            <h3>Available times</h3>
+            <p>IST · 30 minutes</p>
+          </div>
+          <div class="bk-slots" id="mkSlots" role="group" aria-label="Choose a time"></div>
+          <p class="bk-note">Greyed-out times are already booked. Sundays we're closed.</p>
+        </div>
+        <p class="inq-err" id="err4" role="alert"></p>
+      </fieldset>
+
+      <!-- success -->
+      <div class="inq-step inq-done" data-step="5">
+        <div class="done-badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none" stroke="#C0543A" stroke-width="2.5"/><path class="done-check" d="M15 27l7 7 15-16" fill="none" stroke="#27392C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 class="inq-title">You're booked, <span id="doneName">friend</span>.</h3>
+        <p class="inq-hint" id="doneLead" style="margin-inline:auto">We've sent the Google Meet link to your email, and we'll call you within the hour.</p>
+
+        <div class="done-meet">
+          <div class="done-when">
+            <b id="doneWhen">—</b>
+            <span>30 min · Google Meet</span>
+          </div>
+          <div class="done-rows">
+            <div class="done-row" id="rowClient"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span>Thank-you email with the Meet link sent to <b id="doneEmail">your email</b></span></div>
+            <div class="done-row" id="rowOwner"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span>The same details sent to <b>anupamgowda1999@gmail.com</b></span></div>
+            <div class="done-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>We'll <b>call you within the hour</b> on <b id="donePhone">your number</b></span></div>
+            <div class="done-row" id="doneDemoRow" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span id="doneDemoText"></span></div>
+          </div>
+          <div class="done-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+            <a id="doneMeet" href="#" target="_blank" rel="noopener">—</a>
+            <button type="button" class="done-copy" id="doneCopy">Copy</button>
+          </div>
+        </div>
+
+        <div class="done-actions">
+          <a class="btn btn-primary" id="doneCal" href="#" target="_blank" rel="noopener">Add to calendar</a>
+          <a class="btn btn-ghost" id="sendWa" href="#" target="_blank" rel="noopener">Message us on WhatsApp</a>
+        </div>
+        <p class="done-note" id="doneNote">A confirmation email is on its way. If you don't see it in a few minutes, check your spam folder.</p>
+        <div class="done-summary" id="doneSummary"></div>
+      </div>
+
+      <div class="inq-nav" id="inqNav">
+        <button type="button" class="btn btn-ghost btn-sm" id="inqBack">Back</button>
+        <span class="inq-count" id="inqCount">Step 1 of 4</span>
+        <button type="button" class="btn btn-primary btn-sm" id="inqNext">Continue</button>
+      </div>
+    </form>
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+  </div>
+</div>
+
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>
