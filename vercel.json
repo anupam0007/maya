@@ -6,9 +6,6 @@
   "functions": {
     "api/*.js": { "maxDuration": 20 }
   },
-  "crons": [
-    { "path": "/api/remind", "schedule": "*/5 * * * *" }
-  ],
   "headers": [
     {
       "source": "/assets/fonts/(.*)",

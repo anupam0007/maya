@@ -129,7 +129,7 @@ async function main() {
     }
     const failed = [];
     for (const target of TARGETS) {
-      const add = vercel(['env', 'add', key, target], { input: env[key] + '\n', timeout: 60_000 });
+      const add = vercel(['env', 'add', key, target], { input: env[key] + '\n', timeout: 150_000 });
       if (add.status !== 0) failed.push(`${target}: ${(add.stderr || '').trim().split('\n').pop()}`);
     }
     if (failed.length) say(`    ${c.red}✗${c.r} ${key} — ${failed[0]}`);

@@ -137,6 +137,51 @@ Edit the wording in `api/_lib/email.js`.
 
 ---
 
+## The joining link is time-locked
+
+The confirmation email does **not** contain the Meet URL. It contains a sealed
+link to `/join`, and the server decides whether to hand the URL over using its
+own clock — so changing a device clock achieves nothing, and decoding the link
+by hand yields ciphertext (AES-256-GCM, keyed on `BOOKING_SECRET`).
+
+| When they open it | What they see |
+|---|---|
+| More than 10 min early | Their booking time, a live countdown, and "come back then". The URL is not in the response at all. |
+| From 10 min before, to 1 h after the start | "The room is open" and the **Join the Google Meet** button. |
+| After that | "This call has finished" and an offer to book another time. |
+
+The page unlocks itself — someone who leaves the tab open at 1:45 will see the
+button appear at 1:50 without touching anything.
+
+Change the window in `api/_lib/handlers.js`: `OPEN_BEFORE_MIN`, `CLOSE_AFTER_MIN`.
+
+## Reminders, 15 minutes before
+
+**Always on.** Every confirmation carries a calendar attachment
+(`maya-studio-call.ics`) with a 15-minute alarm. The client's own phone or
+laptop reminds them — nothing on our side has to be running. Adjust with
+`REMIND_BEFORE_MIN`.
+
+**The emailed reminder** needs somewhere to have written the booking down,
+because a serverless function has no memory between calls. `/api/remind` is
+built and guarded by `CRON_SECRET`; it needs two things to actually send:
+
+1. **A store.** Add a KV store in **Vercel → Storage → Upstash Redis**. It
+   injects `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically, and
+   `api/_lib/store.js` picks them up with no code change.
+2. **A scheduler.** A Vercel **Hobby** plan only allows one cron run per day,
+   which is no use for a 15-minute reminder. Either:
+   - upgrade to Pro and add to `vercel.json`:
+     `"crons": [{ "path": "/api/remind", "schedule": "*/5 * * * *" }]`, or
+   - point any free external scheduler at
+     `https://your-site.vercel.app/api/remind` every 5 minutes, sending
+     `Authorization: Bearer <CRON_SECRET>`.
+
+Until both are in place `/api/remind` reports `"store": "none"` and sends
+nothing, which is why the calendar alarm exists.
+
+---
+
 ## Booking rules
 
 | | |
