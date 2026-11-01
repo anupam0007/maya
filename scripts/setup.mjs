@@ -101,7 +101,16 @@ async function main() {
      ${c.cyan}https://meet.google.com${c.r}
 `);
 
-  const user = await ask(`  Your Gmail address [${env.OWNER_EMAIL}]: `, env.OWNER_EMAIL);
+  // Ask until it is actually an address — it is easy to type the App
+  // Password's *name* here instead, and the failure then shows up much later.
+  let user = '';
+  for (let i = 0; i < 3 && !user; i++) {
+    const a = await ask(`  Your Gmail ${c.b}address${c.r} [${env.OWNER_EMAIL}]: `, env.OWNER_EMAIL);
+    if (/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(a)) user = a;
+    else say(`  ${c.red}That is not an email address${c.r} — it should look like you@gmail.com`);
+  }
+  if (!user) { say(`\n  ${c.red}Run setup again when you have the address to hand.${c.r}\n`); rl.close(); return; }
+
   const pass = (await ask(`  App Password (16 characters): `, env.GMAIL_APP_PASSWORD || '')).replace(/\s+/g, '');
   const meet = await ask(`  Your Meet room link: `, env.MEET_LINK || '');
 
