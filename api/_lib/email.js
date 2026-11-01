@@ -74,21 +74,43 @@ function whenBlock(whenLong) {
     </td></tr></table>`;
 }
 
+/* The client gets a door, not a key: the link opens shortly before the call
+   and shows the time until then. The studio gets the room URL directly. */
+function joinButton(url, opensBeforeMin) {
+  if (!url) {
+    return `<div style="padding:14px 18px;background:${PAPER};border:1px dashed ${LINE};border-radius:12px;font:400 14px ${SANS};color:${INK3};margin-bottom:18px;">
+      Your joining link will follow in a separate message shortly.
+    </div>`;
+  }
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 12px;"><tr>
+    <td style="border-radius:999px;background:${CLAY};">
+      <a href="${esc(url)}" style="display:inline-block;padding:15px 32px;font:600 15px ${SANS};color:${PAPER_HI};text-decoration:none;border-radius:999px;">Open your joining link</a>
+    </td></tr></table>
+    <div style="font:400 13px ${SANS};color:${INK3};line-height:1.6;padding-bottom:4px;">
+      This link unlocks <strong style="color:${INK};">${opensBeforeMin} minutes before</strong> your call.
+      Open it any time — before then it will simply show you when to come back.
+    </div>
+    <div style="font:400 12px ${SANS};color:${INK3};word-break:break-all;padding-top:8px;">
+      <a href="${esc(url)}" style="color:${CLAY};">${esc(url)}</a>
+    </div>`;
+}
+
 /* ---- 1. to the client -------------------------------------------------- */
-export function clientEmail({ name, whenLong, meetLink, services }) {
+export function clientEmail({ name, whenLong, meetLink, joinLink, opensBeforeMin = 10, services }) {
   const first = String(name || '').trim().split(/\s+/)[0] || 'there';
   const subject = `Thank you for booking — your Google Meet link (${whenLong})`;
 
   const body = `<tr><td style="padding:30px 28px 26px;">
     <div style="font:400 27px ${SERIF};color:${INK};line-height:1.25;letter-spacing:-.6px;padding-bottom:12px;">Thank you for booking, ${esc(first)}.</div>
     <div style="font:400 15px ${SANS};color:${INK2};line-height:1.65;padding-bottom:20px;">
-      Your slot with Maya Studio is confirmed. This is the Google Meet link we are providing for our call —
-      <strong style="color:${INK};">please join at the time below</strong>. It works on your phone or laptop, no app needed.
+      Your slot with Maya Studio is confirmed. Below is your joining link for our Google Meet call —
+      <strong style="color:${INK};">please come back and open it at the time shown</strong>. It works on your phone or laptop, no app needed.
     </div>
     ${whenBlock(whenLong)}
-    ${meetButton(meetLink)}
+    ${joinButton(joinLink || meetLink, opensBeforeMin)}
     <div style="padding:12px 16px;background:${PAPER};border-left:3px solid ${SAND};border-radius:0 10px 10px 0;font:400 13px ${SANS};color:${INK2};line-height:1.6;margin:16px 0 0;">
-      Please join a minute or two early. If you are running late, just reply to this email and we will wait.
+      We have attached this call to the email as a calendar invite, set to remind you
+      <strong style="color:${INK};">15 minutes before</strong>. Open the attachment to add it to your calendar.
     </div>
     <div style="height:1px;background:${LINE};margin:22px 0;"></div>
     <div style="font:400 11px ${SANS};color:${CLAY};letter-spacing:1.8px;text-transform:uppercase;padding-bottom:10px;">What happens next</div>
@@ -105,10 +127,14 @@ export function clientEmail({ name, whenLong, meetLink, services }) {
 
   const text = [
     `Thank you for booking, ${first}.`, '',
-    'Your slot with Maya Studio is confirmed. This is the Google Meet link',
-    'we are providing for our call — please join at the time below.', '',
+    'Your slot with Maya Studio is confirmed. Below is your joining link for',
+    'our Google Meet call — please come back and open it at the time shown.', '',
     `When: ${whenLong} (30 minutes, Google Meet)`,
-    meetLink ? `Google Meet: ${meetLink}` : 'The Meet link will follow shortly.',
+    (joinLink || meetLink)
+      ? `Join here: ${joinLink || meetLink}\n(The link unlocks ${opensBeforeMin} minutes before the call.)`
+      : 'Your joining link will follow shortly.',
+    '',
+    'A calendar invite is attached, set to remind you 15 minutes before.',
     '',
     'What happens next:',
     '- We will call you within the hour.',
@@ -120,6 +146,43 @@ export function clientEmail({ name, whenLong, meetLink, services }) {
   ].filter(Boolean).join('\n');
 
   return { subject, html: shell({ preheader: `${whenLong} · your Google Meet link is inside`, body }), text };
+}
+
+/* ---- 1b. the nudge, shortly before the call ---------------------------- */
+export function reminderEmail({ name, whenLong, joinLink, minutes = 15 }) {
+  const first = String(name || '').trim().split(/\s+/)[0] || 'there';
+  const subject = `Your Maya Studio call starts in ${minutes} minutes`;
+
+  const body = `<tr><td style="padding:30px 28px 26px;">
+    <div style="font:400 27px ${SERIF};color:${INK};line-height:1.25;letter-spacing:-.6px;padding-bottom:12px;">Starting in ${minutes} minutes, ${esc(first)}.</div>
+    <div style="font:400 15px ${SANS};color:${INK2};line-height:1.65;padding-bottom:20px;">
+      This is your reminder to join the meeting. The link below is open now —
+      <strong style="color:${INK};">tap it when you are ready</strong> and we will see you in there.
+    </div>
+    ${whenBlock(whenLong)}
+    ${joinLink ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 12px;"><tr>
+      <td style="border-radius:999px;background:${CLAY};">
+        <a href="${esc(joinLink)}" style="display:inline-block;padding:15px 32px;font:600 15px ${SANS};color:${PAPER_HI};text-decoration:none;border-radius:999px;">Join the call</a>
+      </td></tr></table>
+      <div style="font:400 12px ${SANS};color:${INK3};word-break:break-all;">
+        <a href="${esc(joinLink)}" style="color:${CLAY};">${esc(joinLink)}</a>
+      </div>` : ''}
+    <div style="height:1px;background:${LINE};margin:22px 0;"></div>
+    <div style="font:400 13px ${SANS};color:${INK3};line-height:1.7;">
+      Running late or need to move it? Reply to this email and we will sort it out.
+    </div>
+  </td></tr>`;
+
+  const text = [
+    `Starting in ${minutes} minutes, ${first}.`, '',
+    'This is your reminder to join the meeting.', '',
+    `When: ${whenLong}`,
+    joinLink ? `Join here: ${joinLink}` : '',
+    '', 'Running late? Reply to this email.',
+    '', 'Maya Studio, Bengaluru — +91 72042 15343',
+  ].filter(Boolean).join('\n');
+
+  return { subject, html: shell({ preheader: `Your call starts in ${minutes} minutes`, body }), text };
 }
 
 /* ---- 2. to the studio -------------------------------------------------- */

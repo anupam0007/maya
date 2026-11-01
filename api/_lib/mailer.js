@@ -50,17 +50,20 @@ function smtpTransport() {
  * Send one message. Throws on failure — the caller decides whether a failed
  * email should fail the whole booking (it should not; the slot is real).
  */
-export async function deliver({ to, subject, html, text, replyTo }) {
+export async function deliver({ to, subject, html, text, replyTo, attachments }) {
   const mode = mailMode();
   if (mode === 'none') throw new Error('No email transport configured.');
 
   if (mode === 'google') {
-    return sendViaGmailApi({ to, subject, html, text, replyTo });
+    return sendViaGmailApi({ to, subject, html, text, replyTo, attachments });
   }
 
   await smtpTransport().sendMail({
     from: `Maya Studio <${GMAIL_USER}>`,
     to, replyTo, subject, html, text,
+    attachments: (attachments || []).map((a) => ({
+      filename: a.filename, content: a.content, contentType: a.contentType,
+    })),
   });
   return true;
 }

@@ -151,37 +151,60 @@ export async function createEvent({ start, end, summary, description, attendees 
 /* Subjects and names may contain non-ASCII (₹, accents), so encode them. */
 const enc = (s) => `=?UTF-8?B?${Buffer.from(String(s), 'utf8').toString('base64')}?=`;
 
-function buildMime({ to, from, subject, html, text, replyTo }) {
-  const boundary = `maya_${Math.random().toString(36).slice(2)}`;
+const b64 = (s) => Buffer.from(s, 'utf8').toString('base64').replace(/(.{76})/g, '$1\r\n');
+
+function buildMime({ to, from, subject, html, text, replyTo, attachments = [] }) {
+  const alt = `alt_${Math.random().toString(36).slice(2)}`;
+  const mixed = `mix_${Math.random().toString(36).slice(2)}`;
+  const hasFiles = attachments.length > 0;
+
   const headers = [
     `From: ${from}`,
     `To: ${to}`,
     replyTo ? `Reply-To: ${replyTo}` : null,
     `Subject: ${enc(subject)}`,
     'MIME-Version: 1.0',
-    `Content-Type: multipart/alternative; boundary="${boundary}"`,
+    hasFiles
+      ? `Content-Type: multipart/mixed; boundary="${mixed}"`
+      : `Content-Type: multipart/alternative; boundary="${alt}"`,
   ].filter(Boolean).join('\r\n');
 
   const part = (type, body) => [
-    `--${boundary}`,
+    `--${alt}`,
     `Content-Type: ${type}; charset="UTF-8"`,
     'Content-Transfer-Encoding: base64',
     '',
-    Buffer.from(body, 'utf8').toString('base64').replace(/(.{76})/g, '$1\r\n'),
+    b64(body),
     '',
   ].join('\r\n');
 
+  const body = [part('text/plain', text), part('text/html', html), `--${alt}--`, ''].join('\r\n');
+  if (!hasFiles) return [headers, '', body].join('\r\n');
+
+  const files = attachments.map((a) => [
+    `--${mixed}`,
+    `Content-Type: ${a.contentType || 'application/octet-stream'}; name="${a.filename}"`,
+    `Content-Disposition: attachment; filename="${a.filename}"`,
+    'Content-Transfer-Encoding: base64',
+    '',
+    b64(a.content),
+    '',
+  ].join('\r\n')).join('');
+
   return [
     headers, '',
-    part('text/plain', text),
-    part('text/html', html),
-    `--${boundary}--`, '',
+    `--${mixed}`,
+    `Content-Type: multipart/alternative; boundary="${alt}"`,
+    '',
+    body,
+    files,
+    `--${mixed}--`, '',
   ].join('\r\n');
 }
 
-export async function sendMail({ to, subject, html, text, replyTo }) {
+export async function sendMail({ to, subject, html, text, replyTo, attachments }) {
   const raw = Buffer.from(
-    buildMime({ to, from: `Maya Studio <${OWNER_EMAIL}>`, subject, html, text, replyTo }),
+    buildMime({ to, from: `Maya Studio <${OWNER_EMAIL}>`, subject, html, text, replyTo, attachments }),
     'utf8'
   ).toString('base64url');
 

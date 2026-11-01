@@ -23,6 +23,7 @@ const KEYS = [
   'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN',
   'GMAIL_USER', 'GMAIL_APP_PASSWORD', 'MEET_LINK',
   'OWNER_EMAIL', 'CALENDAR_ID',
+  'BOOKING_SECRET', 'SITE_URL', 'CRON_SECRET',
 ];
 const TARGETS = ['production', 'preview', 'development'];
 

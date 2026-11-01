@@ -647,10 +647,23 @@ async function submit() {
     $('#doneEmail').textContent = email;
     $('#donePhone').textContent = phone;
 
-    const meet = res.meetLink || '';
+    // The sealed joining link, never the room URL — the gate applies here too.
+    const meet = res.joinLink || res.meetLink || '';
     const meetEl = $('#doneMeet');
     meetEl.textContent = meet || 'No link yet — email is not connected';
     meetEl.href = meet || '#';
+
+    const gate = $('#rowGate');
+    if (res.mode === 'live' && meet) {
+      gate.hidden = false;
+      $('#rowGateText').innerHTML =
+        `This link <b>unlocks ${res.opensBeforeMin || 10} minutes before</b> your call — open it any time and it will show you when to come back`
+        + (res.reminderScheduled
+            ? `. We'll also email you <b>${res.remindBeforeMin || 15} minutes ahead</b>.`
+            : `. The calendar invite in your email reminds you <b>${res.remindBeforeMin || 15} minutes ahead</b>.`);
+    } else {
+      gate.hidden = true;
+    }
     $('#doneCopy').style.display = meet ? '' : 'none';
     $('#doneCal').style.display = meet ? '' : 'none';
 

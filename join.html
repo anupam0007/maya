@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join your call — Maya Studio</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F2ECE1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23F2ECE1'/%3E%3Cpath d='M14 46V18l18 20 18-20v28' fill='none' stroke='%23C0543A' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='43' r='3.6' fill='%23D2A24C'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body{ display:grid; place-items:center; min-height:100svh; padding:clamp(16px,4vw,40px); }
+  .jc{
+    width:min(560px,100%); background:var(--paper-hi); border:1px solid var(--line-soft);
+    border-radius:var(--r-lg); box-shadow:var(--sh-2); overflow:hidden; text-align:center;
+  }
+  .jc-top{ background:var(--dark); color:var(--paper-hi); padding:22px 28px; display:flex; align-items:center; justify-content:center; gap:10px; }
+  .jc-top span{ font-family:var(--display); font-size:1.3rem; font-weight:500; letter-spacing:-.03em; }
+  .jc-body{ padding:clamp(28px,5vw,46px) clamp(20px,4vw,40px); }
+  .jc-badge{ width:60px; height:60px; margin:0 auto 20px; display:grid; place-items:center; border-radius:50%; }
+  .jc-badge.wait{ background:rgba(210,162,76,.16); color:var(--sand); }
+  .jc-badge.go{ background:rgba(39,57,44,.1); color:var(--forest); }
+  .jc-badge.off{ background:rgba(192,84,58,.1); color:var(--clay); }
+  .jc h1{ font-size:clamp(1.55rem,4vw,2.3rem); margin-bottom:.45em; }
+  .jc p{ color:var(--ink-2); font-size:1rem; max-width:44ch; margin-inline:auto; }
+  .jc-when{
+    margin:24px auto 0; background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--r); padding:18px 20px;
+  }
+  .jc-when small{ display:block; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--clay); margin-bottom:7px; }
+  .jc-when b{ font-family:var(--display); font-size:clamp(1.1rem,2.6vw,1.45rem); font-weight:470; letter-spacing:-.025em; }
+  .jc-when i{ display:block; font-style:normal; font-size:.82rem; color:var(--ink-3); margin-top:5px; }
+  .count{
+    display:flex; justify-content:center; gap:10px; margin:26px 0 4px; font-variant-numeric:tabular-nums;
+  }
+  .count div{ min-width:66px; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:12px 6px; }
+  .count b{ display:block; font-family:var(--display); font-size:1.7rem; font-weight:470; line-height:1; }
+  .count small{ display:block; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-4); margin-top:6px; }
+  .jc .btn{ margin-top:26px; }
+  .jc-foot{ padding:16px 28px; border-top:1px solid var(--line-soft); background:var(--paper); font-size:.8rem; color:var(--ink-3); }
+  .jc-foot a{ color:var(--clay); text-decoration:underline; text-underline-offset:3px; }
+  .jc-load{ padding:60px 20px; display:flex; align-items:center; justify-content:center; gap:11px; color:var(--ink-3); font-size:.9rem; }
+</style>
+</head>
+<body>
+
+<main class="jc">
+  <div class="jc-top">
+    <svg viewBox="0 0 120 100" width="28" height="23" aria-hidden="true"><path d="M14 88V12l46 52 46-52v76" fill="none" stroke="#D2A24C" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="80" r="8" fill="#C0543A"/></svg>
+    <span>Maya Studio</span>
+  </div>
+  <div id="out"><div class="jc-load"><span class="spin"></span>Checking your booking…</div></div>
+</main>
+
+<script>
+(function () {
+  var out = document.getElementById('out');
+  var token = new URLSearchParams(location.search).get('b') || '';
+  var timer = null, tick = null;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function whenBlock(d) {
+    return '<div class="jc-when"><small>Your call</small><b>' + esc(d.whenLong) + '</b>' +
+           '<i>' + d.durationMin + ' minutes · Google Meet</i></div>';
+  }
+
+  function render(d) {
+    if (tick) { clearInterval(tick); tick = null; }
+    if (!d || !d.ok || !d.state) d = { state: 'invalid' };
+
+    if (d.state === 'invalid') {
+      out.innerHTML =
+        '<div class="jc-body"><div class="jc-badge off"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg></div>' +
+        '<h1>This link isn’t valid</h1>' +
+        '<p>It may have been copied incompletely. Try opening it straight from your confirmation email, or book a new time.</p>' +
+        '<a class="btn btn-primary" href="/#book">Book a call</a></div>';
+      return;
+    }
+
+    if (d.state === 'past') {
+      out.innerHTML =
+        '<div class="jc-body"><div class="jc-badge off"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>' +
+        '<h1>This call has finished</h1>' +
+        '<p>Your slot was ' + esc(d.whenLong) + '. If you missed it, pick another time and we’ll send a fresh link.</p>' +
+        '<a class="btn btn-primary" href="/#book">Book another time</a></div>' +
+        '<div class="jc-foot">Need us sooner? <a href="https://wa.me/917204215343">Message us on WhatsApp</a></div>';
+      return;
+    }
+
+    if (d.state === 'open') {
+      out.innerHTML =
+        '<div class="jc-body"><div class="jc-badge go"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></div>' +
+        '<h1>You’re on' + (d.name ? ', ' + esc(String(d.name).split(' ')[0]) : '') + '.</h1>' +
+        '<p>The room is open. See you in there.</p>' +
+        whenBlock(d) +
+        (d.meetLink
+          ? '<a class="btn btn-primary btn-lg" href="' + esc(d.meetLink) + '" target="_blank" rel="noopener">Join the Google Meet</a>'
+          : '<p style="margin-top:20px;color:var(--clay)">The link is missing — please message us on WhatsApp.</p>') +
+        '</div>' +
+        '<div class="jc-foot">Trouble joining? <a href="https://wa.me/917204215343">Message us on WhatsApp</a></div>';
+      return;
+    }
+
+    /* early — count down, then re-check with the server */
+    out.innerHTML =
+      '<div class="jc-body"><div class="jc-badge wait"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>' +
+      '<h1>You’re a little early' + (d.name ? ', ' + esc(String(d.name).split(' ')[0]) : '') + '.</h1>' +
+      '<p>Your booking time is below. Please come back and open this link then — it unlocks ' + d.opensBeforeMin + ' minutes before the call starts.</p>' +
+      whenBlock(d) +
+      '<div class="count" id="cd"></div>' +
+      '<p style="font-size:.84rem;color:var(--ink-3);margin-top:14px">This page unlocks on its own — you can leave it open.</p>' +
+      '</div>' +
+      '<div class="jc-foot">Need to change the time? <a href="https://wa.me/917204215343">Message us on WhatsApp</a></div>';
+
+    var target = Date.now() + d.opensInMs;
+    var cd = document.getElementById('cd');
+
+    function paint() {
+      var left = target - Date.now();
+      if (left <= 0) { clearInterval(tick); tick = null; load(); return; }
+      var s = Math.floor(left / 1000);
+      var dd = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600);
+      var m = Math.floor(s % 3600 / 60), ss = s % 60;
+      var parts = [];
+      if (dd) parts.push([dd, dd === 1 ? 'day' : 'days']);
+      if (dd || h) parts.push([h, 'hours']);
+      parts.push([m, 'min'], [ss, 'sec']);
+      cd.innerHTML = parts.map(function (p) {
+        return '<div><b>' + String(p[0]).padStart(2, '0') + '</b><small>' + p[1] + '</small></div>';
+      }).join('');
+    }
+    paint();
+    tick = setInterval(paint, 1000);
+  }
+
+  function load() {
+    fetch('/api/join?b=' + encodeURIComponent(token), { headers: { accept: 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(render)
+      .catch(function () {
+        out.innerHTML =
+          '<div class="jc-body"><div class="jc-badge off"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg></div>' +
+          '<h1>Couldn’t check your booking</h1>' +
+          '<p>Something went wrong reaching us. Please try again in a moment.</p>' +
+          '<button class="btn btn-primary" onclick="location.reload()">Try again</button></div>';
+      });
+  }
+
+  if (!token) render({ state: 'invalid' });
+  else load();
+
+  /* re-check when the tab comes back into focus, in case it sat open */
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && !tick) load();
+  });
+})();
+</script>
+</body>
+</html>

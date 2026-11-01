@@ -27,12 +27,21 @@ import {
 } from './google.js';
 import { deliver, mailMode, GMAIL_USER } from './mailer.js';
 import { clientEmail, ownerEmail } from './email.js';
+import { joinUrl } from './token.js';
+import { buildIcs } from './ics.js';
+import { saveBooking, storeKind } from './store.js';
 
 export const OPEN_HOUR = 9;
 export const CLOSE_HOUR = 18;
 export const SLOT_MIN = 30;
 export const LEAD_MIN = 60;
 export const DAYS_AHEAD = 56;
+
+/* How long the joining link stays shut, and how long it stays open. */
+export const OPEN_BEFORE_MIN = 10;
+export const CLOSE_AFTER_MIN = 60;
+/* How far ahead of a call the reminder goes out. */
+export const REMIND_BEFORE_MIN = 15;
 
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -278,13 +287,33 @@ export async function postBook(payload = {}) {
     };
   }
 
+  /* The client never receives the room URL itself — only a sealed link
+     that the server will open for them shortly before the call. */
+  let joinLink = '';
+  try { joinLink = joinUrl({ date, time, name, email, meetLink }); }
+  catch (err) { console.error('[book] could not build join link:', err.message); }
+
+  /* Written down so the cron can remind them; also harmless if it fails. */
+  await saveBooking({ date, time, name, email, phone, joinUrl: joinLink, meetLink, startMs: start.getTime() });
+
+  const ics = buildIcs({
+    start, end,
+    joinUrl: joinLink || meetLink,
+    name,
+    organiser: OWNER_EMAIL,
+    alarmMinutes: REMIND_BEFORE_MIN,
+  });
+
   /* The slot is real at this point. A mail failure must be reported but
      must not pretend the booking did not happen. */
-  const mc = clientEmail({ name, whenLong, meetLink, services });
+  const mc = clientEmail({ name, whenLong, meetLink, joinLink, opensBeforeMin: OPEN_BEFORE_MIN, services });
   const mo = ownerEmail({ name, email, phone, city, pref, whenLong, meetLink, summary, message });
 
   const results = await Promise.allSettled([
-    deliver({ to: email, replyTo: OWNER_EMAIL, ...mc }),
+    deliver({
+      to: email, replyTo: OWNER_EMAIL, ...mc,
+      attachments: [{ filename: 'maya-studio-call.ics', content: ics, contentType: 'text/calendar; method=PUBLISH' }],
+    }),
     deliver({ to: OWNER_EMAIL, replyTo: email, ...mo }),
   ]);
   const emailed = {
@@ -299,7 +328,12 @@ export async function postBook(payload = {}) {
     status: 200,
     body: {
       ok: true, mode: 'live', how: cap.how,
-      meetLink, htmlLink, eventId,
+      // Deliberately not the room URL: the browser gets the same sealed
+      // link the email does, so the gate holds here too.
+      joinLink, opensBeforeMin: OPEN_BEFORE_MIN,
+      remindBeforeMin: REMIND_BEFORE_MIN,
+      reminderScheduled: storeKind() !== 'none',
+      htmlLink, eventId,
       startISO: start.toISOString(), endISO: end.toISOString(),
       recipients: { client: email, owner: OWNER_EMAIL },
       emailed,

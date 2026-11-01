@@ -81,6 +81,13 @@ async function serveStatic(req, res, pathname) {
 
   let stat;
   try { stat = await fsp.stat(file); } catch {
+    // cleanUrls, the same as Vercel: /join serves join.html
+    if (!path.extname(file)) {
+      try {
+        await fsp.stat(file + '.html');
+        return serveStatic(req, res, rel + '.html');
+      } catch { /* fall through to 404 */ }
+    }
     res.writeHead(404, { 'content-type': 'text/html; charset=utf-8' });
     res.end('<h1 style="font:600 20px system-ui;padding:40px">404 — not found</h1>');
     return;
@@ -146,6 +153,20 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (p === '/api/health') return json(res, 200, healthBody());
+
+    /* The remaining endpoints are the Vercel functions themselves, run here
+       with a minimal req/res shim so local behaviour matches production. */
+    if (p === '/api/join' || p === '/api/remind') {
+      const mod = await import(`../api/${p.slice(5)}.js?t=${Date.now()}`);
+      const shimReq = { method: req.method, url: req.url, headers: req.headers, query: Object.fromEntries(url.searchParams) };
+      const shimRes = {
+        _status: 200,
+        setHeader: (k, v) => res.setHeader(k, v),
+        status(code) { this._status = code; return this; },
+        json: (body) => json(res, shimRes._status, body),
+      };
+      return await mod.default(shimReq, shimRes);
+    }
 
     if (p.startsWith('/api/')) return json(res, 404, { ok: false, error: 'No such endpoint.' });
 
