@@ -653,9 +653,19 @@ async function submit() {
     meetEl.href = meet || '#';
     $('#doneCopy').style.display = meet ? '' : 'none';
     $('#doneCal').style.display = meet ? '' : 'none';
+
+    // Until email is connected nothing reaches the studio on its own, so the
+    // WhatsApp hand-off becomes the main action rather than an afterthought.
+    // A booked slot must never just evaporate.
+    const wa = $('#sendWa');
+    wa.classList.toggle('btn-primary', res.mode !== 'live');
+    wa.classList.toggle('btn-ghost', res.mode === 'live');
+    wa.textContent = res.mode === 'live'
+      ? 'Message us on WhatsApp'
+      : 'Send these details on WhatsApp';
     $('#doneLead').textContent = res.mode === 'live'
       ? "We've sent the Google Meet link to your email, and we'll call you within the hour."
-      : 'This is a preview of the flow — nothing has actually been sent yet.';
+      : 'One more tap: send these details to us on WhatsApp and we will confirm your slot and send the Meet link.';
     $('#doneCal').href = BK.googleCalUrl({ date: sel.date, time: sel.time, meetLink: meet, name });
 
     // Report exactly what happened to each recipient — never imply an email
