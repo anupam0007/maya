@@ -1,3 +1,51 @@
+/* Typefaces are inlined here rather than in a second stylesheet: one
+   render-blocking request instead of two.
+   Display : Fraunces Variable       (wght 100-900, SOFT, WONK, opsz)
+   Text    : Hanken Grotesk Variable (wght 100-900)
+   Kannada : Noto Sans Kannada 500                                        */
+@font-face{
+  font-family:'Fraunces';
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+  src:url('fonts/fraunces-var.woff2') format('woff2-variations');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Fraunces';
+  font-style:italic;
+  font-weight:100 900;
+  font-display:swap;
+  src:url('fonts/fraunces-var-italic.woff2') format('woff2-variations');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face{
+  font-family:'Hanken Grotesk';
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+  src:url('fonts/hanken-var.woff2') format('woff2-variations');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Hanken Grotesk';
+  font-style:italic;
+  font-weight:100 900;
+  font-display:swap;
+  src:url('fonts/hanken-var-italic.woff2') format('woff2-variations');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face{
+  font-family:'Noto Sans Kannada';
+  font-style:normal;
+  font-weight:500;
+  font-display:swap;
+  src:url('fonts/noto-kannada-500.woff2') format('woff2');
+  unicode-range:U+0964-0965,U+0C80-0CF2,U+1CD0,U+1CD2,U+1CDA,U+1CF2,U+200C-200D,U+20B9,U+25CC,U+A830-A835;
+}
+
 /* ==========================================================================
    MAYA STUDIO — "Atelier" design system
    Warm editorial luxe: paper, clay, forest, sand. No blue, no neon.
