@@ -1,13 +1,13 @@
 /* ==========================================================================
-   mailer.js — sending the two confirmation emails.
+   mailer.js: sending the two confirmation emails.
 
    There are two ways to send, and the site picks whichever is configured:
 
-     1. Google OAuth   — sends through the Gmail API with the same token
+     1. Google OAuth   : sends through the Gmail API with the same token
                          that creates the calendar event and the Meet link.
                          Best option: unique Meet link per booking.
 
-     2. Gmail SMTP     — sends with an App Password. Much quicker to set up
+     2. Gmail SMTP     : sends with an App Password. Much quicker to set up
                          (no Cloud Console), and pairs with a fixed MEET_LINK
                          for your personal Meet room.
 
@@ -47,7 +47,7 @@ function smtpTransport() {
 }
 
 /**
- * Send one message. Throws on failure — the caller decides whether a failed
+ * Send one message. Throws on failure, so the caller decides whether a failed
  * email should fail the whole booking (it should not; the slot is real).
  */
 export async function deliver({ to, subject, html, text, replyTo, attachments }) {

@@ -1,11 +1,11 @@
 /* ==========================================================================
-   make-video.mjs — renders the story film and its poster frame.
+   make-video.mjs: renders the story film and its poster frame.
 
        npm run video
 
    Frames are drawn with @napi-rs/canvas and piped straight into ffmpeg as
    raw RGBA, so nothing hits the disk between the two. The soundtrack is a
-   quiet pad synthesised here as well — no sample files to carry around.
+   quiet pad synthesised here as well, with no sample files to carry around.
    ========================================================================== */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -32,7 +32,7 @@ for (const [file, alias] of FONT_FILES) {
 }
 
 /* ==========================================================================
-   Soundtrack — a slow pad that changes with each chapter, plus a soft
+   Soundtrack: a slow pad that changes with each chapter, plus a soft
    chime on the cut. Deliberately quiet: it sits under the picture.
    ========================================================================== */
 const SR = 44100;
@@ -40,12 +40,12 @@ const midi = (n) => 440 * Math.pow(2, (n - 69) / 12);
 
 //                    chord voicings, one per scene
 const CHORDS = [
-  [53, 57, 60, 64, 67],  // Fmaj9      — curious
-  [48, 52, 55, 59, 64],  // Cmaj7      — learning
-  [50, 53, 57, 60, 62],  // Dm9        — the grind
-  [46, 50, 53, 57, 60],  // Bbmaj7     — the spark
-  [41, 53, 57, 60, 64],  // Fmaj7 low  — the leap
-  [41, 53, 57, 60, 67],  // Fmaj9      — home
+  [53, 57, 60, 64, 67],  // Fmaj9      curious
+  [48, 52, 55, 59, 64],  // Cmaj7      learning
+  [50, 53, 57, 60, 62],  // Dm9        the grind
+  [46, 50, 53, 57, 60],  // Bbmaj7     the spark
+  [41, 53, 57, 60, 64],  // Fmaj7 low  the leap
+  [41, 53, 57, 60, 67],  // Fmaj9      home
 ];
 
 function makeAudio() {
@@ -121,7 +121,7 @@ function makeAudio() {
 async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
-  console.log(`\n  Maya story film — ${W}x${H}, ${FPS}fps, ${DURATION}s (${TOTAL} frames)\n`);
+  console.log(`\n  Maya story film: ${W}x${H}, ${FPS}fps, ${DURATION}s (${TOTAL} frames)\n`);
 
   process.stdout.write('  · soundtrack … ');
   const wav = path.join(os.tmpdir(), `maya-score-${process.pid}.wav`);
@@ -187,7 +187,7 @@ async function main() {
   fs.unlinkSync(wav);
 
   const kb = (fs.statSync(OUT_MP4).size / 1024 / 1024).toFixed(2);
-  console.log(`done\n\n  ${path.relative(ROOT, OUT_MP4)} — ${kb} MB in ${((Date.now() - t0) / 1000).toFixed(1)}s\n`);
+  console.log(`done\n\n  ${path.relative(ROOT, OUT_MP4)}: ${kb} MB in ${((Date.now() - t0) / 1000).toFixed(1)}s\n`);
 }
 
 main().catch((err) => { console.error('\n', err); process.exit(1); });

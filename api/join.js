@@ -1,6 +1,6 @@
 /* GET /api/join?b=<token>
    Decides whether this booking may have the Meet URL yet. The URL is only
-   ever in the response while the call is actually open — an early visit
+   ever in the response while the call is actually open. An early visit
    gets the time and a countdown, nothing more. The clock used is the
    server's, so changing your device clock achieves nothing. */
 import { openBooking } from './_lib/token.js';
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ ...common, state: 'past' });
   }
 
-  // Open — and only now does the actual meeting URL leave the server.
+  // Open, and only now does the actual meeting URL leave the server.
   // A booking made through Google OAuth carries its own link; the simpler
   // setup falls back to the studio's fixed room.
   return res.status(200).json({

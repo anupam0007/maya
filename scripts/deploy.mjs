@@ -1,5 +1,5 @@
 /* ==========================================================================
-   deploy.mjs — push .env to Vercel and ship.
+   deploy.mjs: push .env to Vercel and ship.
 
        npm run deploy
 
@@ -8,7 +8,7 @@
    production, then checks /api/health on the live URL and tells you whether
    bookings will genuinely send.
 
-   Requires the Vercel CLI to be authenticated — either:
+   Requires the Vercel CLI to be authenticated, either:
        vercel login
    or an access token from vercel.com/account/tokens:
        npm run deploy -- --token=XXXXXXXX
@@ -53,7 +53,7 @@ function vercel(args, { input, quiet, timeout = 90_000 } = {}) {
 /** Names of the environment variables the project already has. */
 function existingEnvNames() {
   const res = vercel(['env', 'ls'], { quiet: true, timeout: 60_000 });
-  if (res.status !== 0) return null;                   // unknown — skip removals
+  if (res.status !== 0) return null;                   // unknown, skip removals
   const names = new Set();
   for (const line of (res.stdout || '').split(/\r?\n/)) {
     const m = line.match(/^\s{1,4}([A-Z][A-Z0-9_]{2,})\s{2,}/);
@@ -80,7 +80,7 @@ function readEnv() {
 }
 
 async function main() {
-  say(`\n  ${c.b}Maya Studio${c.r} — deploy to Vercel\n`);
+  say(`\n  ${c.b}Maya Studio${c.r}: deploy to Vercel\n`);
 
   /* 1. authenticated? */
   const who = vercel(['whoami'], { quiet: true });
@@ -100,14 +100,14 @@ async function main() {
   /* 2. what have we got to push? */
   const env = readEnv();
   const present = KEYS.filter((k) => env[k]);
-  if (!present.length) die('.env has no values filled in yet — nothing to push.');
+  if (!present.length) die('.env has no values filled in yet, nothing to push.');
 
   const hasGoogle = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN'].every((k) => env[k]);
   const hasSmtp = env.GMAIL_APP_PASSWORD && env.MEET_LINK;
   if (!hasGoogle && !hasSmtp) {
     say(`\n  ${c.yellow}!${c.r} Neither setup is complete, so the live site will still be in preview mode.`);
     say(`    Google needs all three GOOGLE_* values; the quick route needs GMAIL_APP_PASSWORD + MEET_LINK.`);
-    say(`    Deploying anyway — re-run this once .env is filled in.\n`);
+    say(`    Deploying anyway, re-run this once .env is filled in.\n`);
   }
 
   /* 3. link the project (no-op if already linked) */
@@ -122,7 +122,7 @@ async function main() {
   const existing = existingEnvNames();
   for (const key of present) {
     // Clear it first so re-running updates rather than erroring, but only
-    // when it is actually there — removing a name that does not exist is
+    // when it is actually there, because removing a name that does not exist is
     // what drops the CLI into a prompt.
     if (existing === null || existing.has(key)) {
       vercel(['env', 'rm', key, '--yes'], { quiet: true, timeout: 60_000 });
@@ -132,7 +132,7 @@ async function main() {
       const add = vercel(['env', 'add', key, target], { input: env[key] + '\n', timeout: 150_000 });
       if (add.status !== 0) failed.push(`${target}: ${(add.stderr || '').trim().split('\n').pop()}`);
     }
-    if (failed.length) say(`    ${c.red}✗${c.r} ${key} — ${failed[0]}`);
+    if (failed.length) say(`    ${c.red}✗${c.r} ${key}: ${failed[0]}`);
     else say(`    ${c.green}✓${c.r} ${key}`);
   }
 
@@ -142,7 +142,7 @@ async function main() {
     cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'],
     shell: process.platform === 'win32',
   });
-  if (dep.status !== 0) die('Deploy failed — see the output above.');
+  if (dep.status !== 0) die('Deploy failed, see the output above.');
 
   const url = (dep.stdout.match(/https:\/\/[^\s]+\.vercel\.app/g) || []).pop();
   if (!url) {
@@ -162,7 +162,7 @@ async function main() {
       say(`\n  Fill in .env, then run ${c.cyan}npm run deploy${c.r} again.\n`);
     }
   } catch {
-    say(`  ${c.dim}(could not reach ${url}/api/health — check it in a browser)${c.r}\n`);
+    say(`  ${c.dim}(could not reach ${url}/api/health, check it in a browser)${c.r}\n`);
   }
 }
 

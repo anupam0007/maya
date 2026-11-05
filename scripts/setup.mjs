@@ -1,5 +1,5 @@
 /* ==========================================================================
-   setup.mjs — the fastest way to make bookings real.
+   setup.mjs: the fastest way to make bookings real.
 
        npm run setup
 
@@ -40,7 +40,7 @@ function readEnv() {
 }
 
 function writeEnv(env) {
-  const body = `# Maya Studio — written by "npm run setup".
+  const body = `# Maya Studio, written by "npm run setup".
 # Never commit this file. It is already in .gitignore.
 
 ${Object.entries(env).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}=${v}`).join('\n')}
@@ -49,13 +49,13 @@ ${Object.entries(env).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}=$
 }
 
 async function main() {
-  say(`\n  ${c.b}Maya Studio${c.r} — connect bookings to Google\n`);
+  say(`\n  ${c.b}Maya Studio${c.r}: connect bookings to Google\n`);
   const env = readEnv();
   env.OWNER_EMAIL = env.OWNER_EMAIL || 'anupamgowda1999@gmail.com';
   env.CALENDAR_ID = env.CALENDAR_ID || 'primary';
 
-  say(`  ${c.b}1${c.r}  Gmail App Password ${c.dim}— about 3 minutes, real email, one fixed Meet room${c.r}`);
-  say(`  ${c.b}2${c.r}  Full Google OAuth  ${c.dim}— about 10 minutes, a new Meet link for every booking${c.r}\n`);
+  say(`  ${c.b}1${c.r}  Gmail App Password ${c.dim}about 3 minutes, real email, one fixed Meet room${c.r}`);
+  say(`  ${c.b}2${c.r}  Full Google OAuth  ${c.dim}about 10 minutes, a new Meet link for every booking${c.r}\n`);
   const choice = await ask(`  Which one? [1] `, '1');
 
   if (choice === '2') {
@@ -96,25 +96,25 @@ async function main() {
   b. Create an App Password (name it "Maya site") and copy the 16 characters:
      ${c.cyan}https://myaccount.google.com/apppasswords${c.r}
 
-  c. Get your permanent Meet room — open Google Meet, click "New meeting",
+  c. Get your permanent Meet room: open Google Meet, click "New meeting",
      then "Create a meeting for later", and copy the link:
      ${c.cyan}https://meet.google.com${c.r}
 `);
 
-  // Ask until it is actually an address — it is easy to type the App
+  // Ask until it is actually an address, because it is easy to type the App
   // Password's *name* here instead, and the failure then shows up much later.
   let user = '';
   for (let i = 0; i < 3 && !user; i++) {
     const a = await ask(`  Your Gmail ${c.b}address${c.r} [${env.OWNER_EMAIL}]: `, env.OWNER_EMAIL);
     if (/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(a)) user = a;
-    else say(`  ${c.red}That is not an email address${c.r} — it should look like you@gmail.com`);
+    else say(`  ${c.red}That is not an email address${c.r}. It should look like you@gmail.com`);
   }
   if (!user) { say(`\n  ${c.red}Run setup again when you have the address to hand.${c.r}\n`); rl.close(); return; }
 
   const pass = (await ask(`  App Password (16 characters): `, env.GMAIL_APP_PASSWORD || '')).replace(/\s+/g, '');
   const meet = await ask(`  Your Meet room link: `, env.MEET_LINK || '');
 
-  if (!pass || pass.length < 16) { say(`\n  ${c.red}That App Password looks too short — it should be 16 characters.${c.r}\n`); rl.close(); return; }
+  if (!pass || pass.length < 16) { say(`\n  ${c.red}That App Password looks too short. It should be 16 characters.${c.r}\n`); rl.close(); return; }
   if (!/^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}/i.test(meet)) {
     say(`\n  ${c.red}That does not look like a Meet link.${c.r} It should read like https://meet.google.com/abc-defg-hij\n`);
     rl.close(); return;
@@ -152,13 +152,13 @@ async function main() {
   try {
     const mail = clientEmail({
       name: 'Test Booking',
-      whenLong: 'this is only a test — no call is scheduled',
+      whenLong: 'this is only a test, no call is scheduled',
       meetLink: env.MEET_LINK,
       services: 'a test of the booking emails',
     });
     await deliver({ to, replyTo: env.OWNER_EMAIL, ...mail });
     say(`${c.green}sent${c.r}`);
-    say(`\n  Check ${c.b}${to}${c.r} — you should have it within a few seconds.`);
+    say(`\n  Check ${c.b}${to}${c.r}. You should have it within a few seconds.`);
   } catch (e) {
     say(`${c.red}failed${c.r}\n  ${e.message}\n`);
     rl.close(); return;
@@ -167,7 +167,7 @@ async function main() {
   say(`
   ${c.green}Bookings are now real on this machine.${c.r}
 
-  Last step — push the same values to Vercel and redeploy:
+  Last step: push the same values to Vercel and redeploy:
 
       ${c.cyan}npm run deploy${c.r}
 

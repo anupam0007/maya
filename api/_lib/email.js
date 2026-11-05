@@ -1,8 +1,8 @@
 /* ==========================================================================
-   email.js — the two messages that go out when someone books.
+   email.js: the two messages that go out when someone books.
 
    Table-based and inline-styled, because email clients are email clients.
-   Georgia stands in for Fraunces and the system sans stack for Hanken —
+   Georgia stands in for Fraunces and the system sans stack for Hanken,
    webfonts do not survive the trip, but the palette does.
    ========================================================================== */
 
@@ -41,7 +41,7 @@ function shell({ preheader, body }) {
     ${body}
     <tr><td style="padding:20px 28px;background:${PAPER};border-top:1px solid ${LINE};">
       <div style="font:400 12px ${SANS};color:${INK3};line-height:1.7;">
-        Maya Studio — websites, invitations, brochures, video and logos.<br>
+        Maya Studio: websites, invitations, brochures, video and logos.<br>
         <a href="tel:+917204215343" style="color:${CLAY};text-decoration:none;">+91 72042 15343</a> ·
         <a href="mailto:anupamgowda1999@gmail.com" style="color:${CLAY};text-decoration:none;">anupamgowda1999@gmail.com</a>
       </div>
@@ -88,7 +88,7 @@ function joinButton(url, opensBeforeMin) {
     </td></tr></table>
     <div style="font:400 13px ${SANS};color:${INK3};line-height:1.6;padding-bottom:4px;">
       This link unlocks <strong style="color:${INK};">${opensBeforeMin} minutes before</strong> your call.
-      Open it any time — before then it will simply show you when to come back.
+      Open it any time. Before then it will simply show you when to come back.
     </div>
     <div style="font:400 12px ${SANS};color:${INK3};word-break:break-all;padding-top:8px;">
       <a href="${esc(url)}" style="color:${CLAY};">${esc(url)}</a>
@@ -98,12 +98,12 @@ function joinButton(url, opensBeforeMin) {
 /* ---- 1. to the client -------------------------------------------------- */
 export function clientEmail({ name, whenLong, meetLink, joinLink, opensBeforeMin = 10, services }) {
   const first = String(name || '').trim().split(/\s+/)[0] || 'there';
-  const subject = `Thank you for booking — your Google Meet link (${whenLong})`;
+  const subject = `Thank you for booking: your Google Meet link (${whenLong})`;
 
   const body = `<tr><td style="padding:30px 28px 26px;">
     <div style="font:400 27px ${SERIF};color:${INK};line-height:1.25;letter-spacing:-.6px;padding-bottom:12px;">Thank you for booking, ${esc(first)}.</div>
     <div style="font:400 15px ${SANS};color:${INK2};line-height:1.65;padding-bottom:20px;">
-      Your slot with Maya Studio is confirmed. Below is your joining link for our Google Meet call —
+      Your slot with Maya Studio is confirmed. Below is your joining link for our Google Meet call,
       <strong style="color:${INK};">please come back and open it at the time shown</strong>. It works on your phone or laptop, no app needed.
     </div>
     ${whenBlock(whenLong)}
@@ -121,14 +121,14 @@ export function clientEmail({ name, whenLong, meetLink, joinLink, opensBeforeMin
     </div>
     <div style="height:1px;background:${LINE};margin:22px 0;"></div>
     <div style="font:400 13px ${SANS};color:${INK3};line-height:1.7;">
-      Need to move it? Just reply to this email and we will find another time — Monday to Saturday, 9 am to 6 pm.
+      Need to move it? Just reply to this email and we will find another time, Monday to Saturday, 9 am to 6 pm.
     </div>
   </td></tr>`;
 
   const text = [
     `Thank you for booking, ${first}.`, '',
     'Your slot with Maya Studio is confirmed. Below is your joining link for',
-    'our Google Meet call — please come back and open it at the time shown.', '',
+    'our Google Meet call. Please come back and open it at the time shown.', '',
     `When: ${whenLong} (30 minutes, Google Meet)`,
     (joinLink || meetLink)
       ? `Join here: ${joinLink || meetLink}\n(The link unlocks ${opensBeforeMin} minutes before the call.)`
@@ -142,7 +142,7 @@ export function clientEmail({ name, whenLong, meetLink, joinLink, opensBeforeMin
     '- A clear quote follows within a day.',
     '',
     'Need to move it? Reply to this email. Mon-Sat, 9am-6pm IST.',
-    '', 'Maya Studio, Bengaluru — +91 72042 15343',
+    '', 'Maya Studio, Bengaluru. +91 72042 15343',
   ].filter(Boolean).join('\n');
 
   return { subject, html: shell({ preheader: `${whenLong} · your Google Meet link is inside`, body }), text };
@@ -156,7 +156,7 @@ export function reminderEmail({ name, whenLong, joinLink, minutes = 15 }) {
   const body = `<tr><td style="padding:30px 28px 26px;">
     <div style="font:400 27px ${SERIF};color:${INK};line-height:1.25;letter-spacing:-.6px;padding-bottom:12px;">Starting in ${minutes} minutes, ${esc(first)}.</div>
     <div style="font:400 15px ${SANS};color:${INK2};line-height:1.65;padding-bottom:20px;">
-      This is your reminder to join the meeting. The link below is open now —
+      This is your reminder to join the meeting. The link below is open now,
       <strong style="color:${INK};">tap it when you are ready</strong> and we will see you in there.
     </div>
     ${whenBlock(whenLong)}
@@ -179,7 +179,7 @@ export function reminderEmail({ name, whenLong, joinLink, minutes = 15 }) {
     `When: ${whenLong}`,
     joinLink ? `Join here: ${joinLink}` : '',
     '', 'Running late? Reply to this email.',
-    '', 'Maya Studio, Bengaluru — +91 72042 15343',
+    '', 'Maya Studio, Bengaluru. +91 72042 15343',
   ].filter(Boolean).join('\n');
 
   return { subject, html: shell({ preheader: `Your call starts in ${minutes} minutes`, body }), text };
@@ -187,7 +187,7 @@ export function reminderEmail({ name, whenLong, joinLink, minutes = 15 }) {
 
 /* ---- 2. to the studio -------------------------------------------------- */
 export function ownerEmail({ name, email, phone, city, pref, whenLong, meetLink, summary, message }) {
-  const subject = `New booking — ${name}, ${whenLong}`;
+  const subject = `New booking: ${name}, ${whenLong}`;
 
   const row = (k, v) => v
     ? `<tr>
@@ -222,7 +222,7 @@ export function ownerEmail({ name, email, phone, city, pref, whenLong, meetLink,
   </td></tr>`;
 
   const text = [
-    `${name} booked a call — ${whenLong}`, '',
+    `${name} booked a call: ${whenLong}`, '',
     `Call them within the hour.`, '',
     `Email: ${email}`, `Phone: ${phone}`,
     city ? `City: ${city}` : '', `Prefers: ${pref}`,
@@ -231,5 +231,5 @@ export function ownerEmail({ name, email, phone, city, pref, whenLong, meetLink,
     message ? `\nIn their words: "${message}"` : '',
   ].filter(Boolean).join('\n');
 
-  return { subject, html: shell({ preheader: `${whenLong} — call within the hour`, body }), text };
+  return { subject, html: shell({ preheader: `${whenLong}, call within the hour`, body }), text };
 }

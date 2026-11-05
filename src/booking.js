@@ -1,5 +1,5 @@
 /* ==========================================================================
-   booking.js — slot picking.
+   booking.js: slot picking.
 
    The studio works Monday to Saturday, 9:00am to 6:00pm IST. Everything
    here is computed in Asia/Kolkata no matter where the visitor sits, so a
@@ -8,7 +8,7 @@
 
 export const TZ = 'Asia/Kolkata';
 export const OPEN_HOUR = 9;        // 9:00 am
-export const CLOSE_HOUR = 18;      // 6:00 pm — last slot starts 17:30
+export const CLOSE_HOUR = 18;      // 6:00 pm, last slot starts 17:30
 export const SLOT_MIN = 30;
 export const LEAD_MIN = 60;        // don't offer a slot less than an hour away
 export const DAYS_AHEAD = 56;      // how far out people may book
@@ -30,7 +30,7 @@ export function istToday() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 }
 
-/** The real instant a slot begins. '+05:30' is fixed — India has no DST. */
+/** The real instant a slot begins. '+05:30' is fixed, India has no DST. */
 export const slotInstant = (date, time) => new Date(`${date}T${time}:00+05:30`);
 
 export function allSlots() {
@@ -87,7 +87,7 @@ export async function fetchTaken(date) {
       apiMode = j.mode || 'live';
       return Array.isArray(j.taken) ? j.taken : [];
     } catch {
-      // opened straight off the filesystem, or the function is asleep —
+      // opened straight off the filesystem, or the function is asleep,
       // show the full grid rather than an empty, broken-looking one
       apiMode = 'offline';
       return [];
@@ -111,7 +111,7 @@ export function select(date, time) {
 }
 
 /* ==========================================================================
-   Picker — binds the shared selection to one set of DOM nodes.
+   Picker: binds the shared selection to one set of DOM nodes.
    Used twice: the dark panel on the page, and step 4 of the modal.
    ========================================================================== */
 export function createPicker({ monthEl, daysEl, slotsEl, prevEl, nextEl, labelEl }) {
@@ -128,7 +128,7 @@ export function createPicker({ monthEl, daysEl, slotsEl, prevEl, nextEl, labelEl
     const a = parseYmd(list[0]), b = parseYmd(list[list.length - 1]);
     monthEl.textContent = a.getUTCMonth() === b.getUTCMonth()
       ? `${MON[a.getUTCMonth()]} ${a.getUTCFullYear()}`
-      : `${MON[a.getUTCMonth()]} – ${MON[b.getUTCMonth()]} ${b.getUTCFullYear()}`;
+      : `${MON[a.getUTCMonth()]} to ${MON[b.getUTCMonth()]} ${b.getUTCFullYear()}`;
   }
 
   function renderDays() {
@@ -151,7 +151,7 @@ export function createPicker({ monthEl, daysEl, slotsEl, prevEl, nextEl, labelEl
       b.disabled = dead;
       b.dataset.date = date;
       b.setAttribute('aria-pressed', String(date === viewDate));
-      b.setAttribute('aria-label', sunday ? `${prettyDate(date)} — closed` : prettyDate(date));
+      b.setAttribute('aria-label', sunday ? `${prettyDate(date)}, closed` : prettyDate(date));
       b.innerHTML = `<small>${DOW[d.getUTCDay()]}</small><b>${d.getUTCDate()}</b><i>${sunday ? 'closed' : date === today ? 'today' : MON[d.getUTCMonth()].slice(0, 3)}</i>`;
       if (!dead) b.addEventListener('click', () => { viewDate = date; renderDays(); renderSlots(); });
       daysEl.appendChild(b);
@@ -189,7 +189,7 @@ export function createPicker({ monthEl, daysEl, slotsEl, prevEl, nextEl, labelEl
       b.disabled = gone;
       b.textContent = prettyTime(t);
       b.setAttribute('aria-pressed', String(selection.date === date && selection.time === t));
-      if (gone) b.setAttribute('aria-label', `${prettyTime(t)} — already booked`);
+      if (gone) b.setAttribute('aria-label', `${prettyTime(t)}, already booked`);
       if (!gone) b.addEventListener('click', () => select(date, t));
       slotsEl.appendChild(b);
     });
@@ -247,12 +247,12 @@ export function googleCalUrl({ date, time, meetLink, name }) {
   const z = (d) => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
   const p = new URLSearchParams({
     action: 'TEMPLATE',
-    text: 'Maya Studio — intro call',
+    text: 'Maya Studio intro call',
     dates: `${z(start)}/${z(end)}`,
     details: `A 30-minute call with Maya Studio.${meetLink ? `\n\nGoogle Meet: ${meetLink}` : ''}`,
     location: meetLink || 'Google Meet',
     ctz: TZ,
   });
-  if (name) p.set('text', `Maya Studio × ${name} — intro call`);
+  if (name) p.set('text', `Maya Studio × ${name}: intro call`);
   return `https://calendar.google.com/calendar/render?${p}`;
 }

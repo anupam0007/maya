@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ics.js — the calendar attachment.
+   ics.js: the calendar attachment.
 
    Carries a 15-minute alarm, so the client's own calendar reminds them
    even if nothing on our side ever runs. That is the reminder that works
@@ -66,7 +66,7 @@ export function buildIcs({ start, end, joinUrl, name, organiser, alarmMinutes = 
     `DTSTAMP:${stamp(new Date())}`,
     `DTSTART:${stamp(start)}`,
     `DTEND:${stamp(end)}`,
-    `SUMMARY:${esc('Maya Studio — intro call')}`,
+    `SUMMARY:${esc('Maya Studio intro call')}`,
     `DESCRIPTION:${esc(description)}`,
     joinUrl ? `URL:${esc(joinUrl)}` : '',
     joinUrl ? `LOCATION:${esc(joinUrl)}` : '',
@@ -75,7 +75,7 @@ export function buildIcs({ start, end, joinUrl, name, organiser, alarmMinutes = 
     'BEGIN:VALARM',
     `TRIGGER:-PT${alarmMinutes}M`,
     'ACTION:DISPLAY',
-    `DESCRIPTION:${esc(`Your Maya Studio call starts in ${alarmMinutes} minutes — time to join.`)}`,
+    `DESCRIPTION:${esc(`Your Maya Studio call starts in ${alarmMinutes} minutes. Time to join.`)}`,
     'END:VALARM',
     'END:VEVENT',
     'END:VCALENDAR',

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   film.mjs — the six scenes of the Maya story film.
+   film.mjs: the six scenes of the Maya story film.
 
    Typographic and warm: paper, clay, sand, forest. The same palette and
    typefaces as the site, so the film feels like part of the page rather
@@ -186,7 +186,7 @@ function motes(x, t, n, color, alpha) {
 }
 
 /* ==========================================================================
-   SCENE 1 — A curious kid
+   SCENE 1: A curious kid
    ========================================================================== */
 function s1(x, t) {
   paperBg(x);
@@ -237,7 +237,7 @@ function s1(x, t) {
 }
 
 /* ==========================================================================
-   SCENE 2 — Computer Science Engineering
+   SCENE 2: Computer Science Engineering
    ========================================================================== */
 function s2(x, t) {
   paperBg(x, '#EFE9DC');
@@ -283,7 +283,7 @@ function s2(x, t) {
   if (sub > 0) {
     x.save(); x.globalAlpha = sub;
     x.fillStyle = C.ink3; x.font = `400 20px ${SANS}`;
-    x.fillText('A BE in Computer Science — four years of', 74, 426);
+    x.fillText('A BE in Computer Science, four years of', 74, 426);
     x.fillText('understanding how things are actually built.', 74, 456);
     x.restore();
   }
@@ -303,7 +303,7 @@ function s2(x, t) {
 }
 
 /* ==========================================================================
-   SCENE 3 — The IT years
+   SCENE 3: The IT years
    ========================================================================== */
 function s3(x, t) {
   // night falls over the paper
@@ -388,7 +388,7 @@ function s3(x, t) {
 }
 
 /* ==========================================================================
-   SCENE 4 — The spark
+   SCENE 4: The spark
    ========================================================================== */
 function s4(x, t) {
   // the warmth comes back
@@ -457,7 +457,7 @@ function s4(x, t) {
 }
 
 /* ==========================================================================
-   SCENE 5 — Passion over paycheck
+   SCENE 5: Passion over paycheck
    ========================================================================== */
 function s5(x, t) {
   paperBg(x);
@@ -465,7 +465,7 @@ function s5(x, t) {
 
   const cx = 980, cy = 320, R = 84;
   const join = outQuint(win(t, 1.0, 1.6));
-  // they overlap but never quite become one circle — you can still see both
+  // they overlap but never quite become one circle, so you can still see both
   const gap = 24 + 130 * (1 - join);
 
   [[-1, 'A', C.clay, 'Anupam Gowda', 'design & web'],
@@ -531,7 +531,7 @@ function s5(x, t) {
 }
 
 /* ==========================================================================
-   SCENE 6 — Maya
+   SCENE 6: Maya
    ========================================================================== */
 function s6(x, t) {
   paperBg(x, C.paperHi);
@@ -579,7 +579,7 @@ function s6(x, t) {
     x.fillStyle = C.paperHi; x.font = `600 20px ${SANS}`;
     x.fillText('Book a free 30-minute call', W / 2, by2 + 39);
     x.fillStyle = C.ink3; x.font = `400 16px ${SANS}`;
-    x.fillText('Monday to Saturday, 9 am – 6 pm  ·  Google Meet link sent instantly', W / 2, by2 + 98);
+    x.fillText('Monday to Saturday, 9 am to 6 pm  ·  Google Meet link sent instantly', W / 2, by2 + 98);
     x.restore();
   }
 
@@ -594,7 +594,7 @@ function s6(x, t) {
 }
 
 /* ==========================================================================
-   Timeline — the `at` values match data-t on the chapter list in index.html
+   Timeline: the `at` values match data-t on the chapter list in index.html
    ========================================================================== */
 export const SCENES = [
   { at: 0,  dur: 6, draw: s1 },

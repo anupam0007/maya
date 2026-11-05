@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Maya Studio — site script
+   Maya Studio site script
 
    Build:  npm run build      (esbuild bundles this into assets/app.js)
    Config: the CONFIG block below is the only thing you normally touch.
@@ -60,7 +60,7 @@ $('#year').textContent = new Date().getFullYear();
 /* ==========================================================================
    LOADER → INTRO
    ========================================================================== */
-/* The 3D scene costs real time to build — six 768×1024 canvases plus an
+/* The 3D scene costs real time to build: six 768×1024 canvases plus an
    environment map. Building it before the page is on screen is what used to
    push first paint out by seconds, so it now starts only once the hero is
    visible and the browser has had two frames to settle. */
@@ -77,7 +77,7 @@ function bootHero() {
     if (reduce) hero.introTo(1);
     else gsap.to(hero.state, { intro: 1, duration: 2.1, ease: 'expo.out' });
   } catch (err) {
-    // no WebGL (old device, blocked context) — the page still reads fine
+    // no WebGL (old device, blocked context), so the page still reads fine
     console.warn('3D hero unavailable:', err);
     $('#webgl').style.display = 'none';
     const hint = $('.scene-hint'); if (hint) hint.remove();
@@ -252,7 +252,7 @@ function setupScroll() {
   });
 
   mm.add('(max-width: 1100px)', () => {
-    // The showcase is a plain horizontal scroller here — swipeable, with the
+    // The showcase is a plain horizontal scroller here: swipeable, with the
     // rail underneath reporting how far along you are.
     const scroller = $('#workScroll'), rail = $('#workRail');
     const sync = () => {
@@ -456,7 +456,7 @@ function hideNudge() {
 $('#nudgeClose').addEventListener('click', hideNudge);
 
 /* ==========================================================================
-   BOOKING — the panel on the page
+   BOOKING: the panel on the page
    ========================================================================== */
 const pagePicker = BK.createPicker({
   monthEl: $('#bkMonth'), daysEl: $('#bkDays'), slotsEl: $('#bkSlots'),
@@ -475,7 +475,7 @@ BK.onSelectionChange((sel) => {
 bkConfirm.addEventListener('click', () => openModal());
 
 /* ==========================================================================
-   MODAL — four steps, then the booking
+   MODAL: four steps, then the booking
    ========================================================================== */
 const modal = $('#inquiry'), form = $('#inqForm');
 const steps = $$('.inq-step', form), bar = $('#inqBar');
@@ -586,7 +586,7 @@ function validateContact() {
     return false;
   };
   if (!name) return fail(nameEl, 'Add your name so we know who we are talking to.');
-  if (!EMAIL_RE.test(email)) return fail(emailEl, 'We need a valid email — that is where your Google Meet link goes.');
+  if (!EMAIL_RE.test(email)) return fail(emailEl, 'We need a valid email. That is where your Google Meet link goes.');
   if (phone.replace(/\D/g, '').length < 10) return fail(phoneEl, 'Enter a 10-digit phone number so we can call you.');
   $('#err3').textContent = '';
   return true;
@@ -595,7 +595,7 @@ function validateContact() {
 /* ---- summary of what they asked for ---- */
 const LABELS = {
   website: 'Website / online store', invitation: 'Invitation', brochure: 'Brochure',
-  video: 'Video editing', logo: 'Logo design', advice: 'Not sure yet — advice',
+  video: 'Video editing', logo: 'Logo design', advice: 'Not sure yet, wants advice',
 };
 function buildSummary(fd) {
   const svc = selected();
@@ -647,17 +647,17 @@ async function submit() {
     $('#doneEmail').textContent = email;
     $('#donePhone').textContent = phone;
 
-    // The sealed joining link, never the room URL — the gate applies here too.
+    // The sealed joining link, never the room URL, so the gate applies here too.
     const meet = res.joinLink || res.meetLink || '';
     const meetEl = $('#doneMeet');
-    meetEl.textContent = meet || 'No link yet — email is not connected';
+    meetEl.textContent = meet || 'No link yet: email is not connected';
     meetEl.href = meet || '#';
 
     const gate = $('#rowGate');
     if (res.mode === 'live' && meet) {
       gate.hidden = false;
       $('#rowGateText').innerHTML =
-        `This link <b>unlocks ${res.opensBeforeMin || 10} minutes before</b> your call — open it any time and it will show you when to come back`
+        `This link <b>unlocks ${res.opensBeforeMin || 10} minutes before</b> your call. Open it any time and it will show you when to come back`
         + (res.reminderScheduled
             ? `. We'll also email you <b>${res.remindBeforeMin || 15} minutes ahead</b>.`
             : `. The calendar invite in your email reminds you <b>${res.remindBeforeMin || 15} minutes ahead</b>.`);
@@ -681,7 +681,7 @@ async function submit() {
       : 'One more tap: send these details to us on WhatsApp and we will confirm your slot and send the Meet link.';
     $('#doneCal').href = BK.googleCalUrl({ date: sel.date, time: sel.time, meetLink: meet, name });
 
-    // Report exactly what happened to each recipient — never imply an email
+    // Report exactly what happened to each recipient, and never imply an email
     // went out when it did not.
     const sent = res.emailed || {};
     const rows = [
@@ -707,7 +707,7 @@ async function submit() {
     } else {
       demoRow.hidden = true;
       $('#doneNote').textContent = res.note
-        || 'Check your inbox — if it is not there in a few minutes, look in the spam folder.';
+        || 'Check your inbox. If it is not there in a few minutes, look in the spam folder.';
     }
 
     $('#sendWa').href = waLink(`Hi Maya! I just booked a call for ${BK.prettyLong(sel.date, sel.time)}.\n\n` + lines.map(([k, v]) => `${k}: ${v}`).join('\n'));

@@ -1,4 +1,4 @@
-# Maya Studio — website
+# Maya Studio website
 
 A 3D, scroll-animated site for the studio, with slot booking that sends a
 **real Google Meet link by email to the client and to
@@ -18,7 +18,7 @@ Then open **http://localhost:3000**.
 Use a different port with `npm start -- 4000`.
 
 > Opening `index.html` by double-clicking shows the site, but booking will not
-> work — browsers block `fetch` from `file://`. Always use `npm start`.
+> work, because browsers block `fetch` from `file://`. Always use `npm start`.
 
 After editing anything in `src/`:
 
@@ -40,22 +40,22 @@ site). It tells you the truth in one line:
 ```
 
 While `live` is `false`, the site runs in **preview mode**: the whole flow
-works, but nothing is emailed and **no Meet link is invented** — the two
+works, but nothing is emailed and **no Meet link is invented**. The two
 messages are written to `.data/outbox/` as HTML so you can open them in a
 browser and read exactly what a client would get.
 
 ---
 
-## Making it real — pick one
+## Making it real: pick one
 
-### Option B — Gmail App Password (about 3 minutes) {#option-b}
+### Option B: Gmail App Password (about 3 minutes) {#option-b}
 
-Fastest way to get real email going. Every call uses one fixed Meet room —
-your personal meeting room — which is fine for a studio taking a few calls a
+Fastest way to get real email going. Every call uses one fixed Meet room,
+your personal meeting room, which is fine for a studio taking a few calls a
 day.
 
 1. Turn on 2-Step Verification: [myaccount.google.com/security](https://myaccount.google.com/security)
-2. Create an App Password: [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) —
+2. Create an App Password: [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords),
    name it "Maya site". You get a 16-character password.
 3. Get your permanent Meet room: open [meet.google.com](https://meet.google.com) →
    **New meeting** → **Create a meeting for later** → copy the link.
@@ -72,9 +72,9 @@ MEET_LINK=https://meet.google.com/abc-defg-hij
    client's booking.
 
 **Trade-off:** no calendar event is created, so the site cannot tell which
-slots you have already filled — every slot always shows as free.
+slots you have already filled, so every slot always shows as free.
 
-### Option A — full Google (about 10 minutes, recommended) {#option-a}
+### Option A: full Google (about 10 minutes, recommended) {#option-a}
 
 - A **new Meet link for every booking**
 - A real calendar event, so Google also sends you both the invite
@@ -83,8 +83,8 @@ slots you have already filled — every slot always shows as free.
 **1. Create an OAuth client**
 
 1. [console.cloud.google.com](https://console.cloud.google.com) → create a project.
-2. **APIs & Services → Library** — enable **Google Calendar API** and **Gmail API**.
-3. **APIs & Services → OAuth consent screen** — choose *External*, fill in the
+2. **APIs & Services → Library**: enable **Google Calendar API** and **Gmail API**.
+3. **APIs & Services → OAuth consent screen**: choose *External*, fill in the
    basics, add `anupamgowda1999@gmail.com` under **Test users**.
 4. **Credentials → Create credentials → OAuth client ID → Web application**.
 5. Under *Authorised redirect URIs* add exactly `http://localhost:5353/callback`
@@ -97,7 +97,7 @@ npm run auth
 ```
 
 Approve the consent screen with the `anupamgowda1999@gmail.com` account. The
-terminal prints a `GOOGLE_REFRESH_TOKEN=…` line — paste it into `.env`.
+terminal prints a `GOOGLE_REFRESH_TOKEN=…` line. Paste it into `.env`.
 
 **3. Restart**
 
@@ -110,24 +110,24 @@ npm start
 > Publish app**). The only scopes are your own calendar and sending your own
 > mail, so Google does not require a review for this.
 
-Keep `.env` out of git — it already is, via `.gitignore`.
+Keep `.env` out of git. It already is, via `.gitignore`.
 
 ---
 
 ## What the client gets
 
-Subject: **Thank you for booking — your Google Meet link (Mon 2 November 2026, 3:00 pm IST)**
+Subject: **Thank you for booking: your Google Meet link (Mon 2 November 2026, 3:00 pm IST)**
 
 > **Thank you for booking, Ravi.**
 > Your slot with Maya Studio is confirmed. This is the Google Meet link we are
-> providing for our call — **please join at the time below**. It works on your
+> providing for our call. **Please join at the time below**. It works on your
 > phone or laptop, no app needed.
 
 …then the date and time, a **Join the Google Meet** button, a note to join a
 minute early, and what happens next.
 
-You get a second email at the same moment — *"Ravi Kumar booked a call. Call
-them within the hour."* — with their email, phone, city and the full brief,
+You get a second email at the same moment, *"Ravi Kumar booked a call. Call
+them within the hour."*, with their email, phone, city and the full brief,
 plus a one-tap **Call Ravi now** button.
 
 The success screen on the site confirms both sends individually, and says so
@@ -141,7 +141,7 @@ Edit the wording in `api/_lib/email.js`.
 
 The confirmation email does **not** contain the Meet URL. It contains a sealed
 link to `/join`, and the server decides whether to hand the URL over using its
-own clock — so changing a device clock achieves nothing, and decoding the link
+own clock, so changing a device clock achieves nothing, and decoding the link
 by hand yields ciphertext (AES-256-GCM, keyed on `BOOKING_SECRET`).
 
 | When they open it | What they see |
@@ -150,7 +150,7 @@ by hand yields ciphertext (AES-256-GCM, keyed on `BOOKING_SECRET`).
 | From 10 min before, to 1 h after the start | "The room is open" and the **Join the Google Meet** button. |
 | After that | "This call has finished" and an offer to book another time. |
 
-The page unlocks itself — someone who leaves the tab open at 1:45 will see the
+The page unlocks itself. Someone who leaves the tab open at 1:45 will see the
 button appear at 1:50 without touching anything.
 
 Change the window in `api/_lib/handlers.js`: `OPEN_BEFORE_MIN`, `CLOSE_AFTER_MIN`.
@@ -159,7 +159,7 @@ Change the window in `api/_lib/handlers.js`: `OPEN_BEFORE_MIN`, `CLOSE_AFTER_MIN
 
 **Always on.** Every confirmation carries a calendar attachment
 (`maya-studio-call.ics`) with a 15-minute alarm. The client's own phone or
-laptop reminds them — nothing on our side has to be running. Adjust with
+laptop reminds them, and nothing on our side has to be running. Adjust with
 `REMIND_BEFORE_MIN`.
 
 **The emailed reminder** needs somewhere to have written the booking down,
@@ -187,13 +187,13 @@ nothing, which is why the calendar alarm exists.
 | | |
 |---|---|
 | **Days** | Monday to Saturday. Sundays closed, shown struck through. |
-| **Hours** | 9:00 am – 6:00 pm IST, 30-minute slots (last starts 5:30 pm). |
-| **Timezone** | Asia/Kolkata, always — a client in Dubai sees the same grid you do. |
+| **Hours** | 9:00 am to 6:00 pm IST, 30-minute slots (last starts 5:30 pm). |
+| **Timezone** | Asia/Kolkata, always, so a client in Dubai sees the same grid you do. |
 | **Lead time** | Slots less than an hour away are hidden. |
 | **How far ahead** | 8 weeks. |
 | **Taken slots** | Greyed out, read live from your calendar (Option A only). |
 
-Email is **required** — the form will not advance past step 3 without a valid
+Email is **required**. The form will not advance past step 3 without a valid
 address, because that is where the Meet link goes.
 
 ---
@@ -213,9 +213,9 @@ send. Run it again any time `.env` changes.
 
 If you would rather do it by hand: `vercel --prod`, then add the variables
 under **Project → Settings → Environment Variables** for all three
-environments — the `GOOGLE_*` set for Option A, or `GMAIL_USER` /
+environments: the `GOOGLE_*` set for Option A, or `GMAIL_USER` /
 `GMAIL_APP_PASSWORD` / `MEET_LINK` for Option B, plus `OWNER_EMAIL` and
-`CALENDAR_ID` either way — and redeploy.
+`CALENDAR_ID` either way, then redeploy.
 
 Either way, finish by opening `https://your-site.vercel.app/api/health` to
 confirm `"live": true`, then make one real booking with your own email address.
@@ -226,7 +226,7 @@ Vercel picks up `api/*.js` as serverless functions automatically.
 
 ## The story film
 
-`assets/video/maya-story.mp4` — 40 seconds, six chapters, rendered from code.
+`assets/video/maya-story.mp4`: 40 seconds, six chapters, rendered from code.
 
 ```
 npm run video
@@ -237,7 +237,7 @@ the poster. Edit `scripts/film.mjs`:
 
 - `SCENES` at the bottom maps each chapter to its start time and draw function.
 - Those start times must match the `data-t` values on the chapter list in
-  `index.html` — that is what makes clicking a chapter jump the video.
+  `index.html`. That is what makes clicking a chapter jump the video.
 - Colours live in `C` at the top of the same file.
 
 ---
@@ -246,7 +246,7 @@ the poster. Edit `scripts/film.mjs`:
 
 ```
 index.html              all page copy and structure
-assets/styles.css       the design system — colours, type, every component
+assets/styles.css       the design system: colours, type, every component
 assets/app.js           built bundle (generated; do not edit)
 assets/fonts/           Fraunces + Hanken Grotesk + Noto Sans Kannada
 assets/video/           the story film and its poster
@@ -256,9 +256,9 @@ src/hero3d.js           the 3D card carousel in the hero
 src/textures.js         the artwork painted onto those cards
 src/booking.js          slot maths, the date/time picker, API calls
 
-api/book.js             POST — books the slot, gets the Meet link, emails both
-api/slots.js            GET  — which slots are already taken
-api/health.js           GET  — what this deployment can actually do
+api/book.js             POST: books the slot, gets the Meet link, emails both
+api/slots.js            GET:  which slots are already taken
+api/health.js           GET:  what this deployment can actually do
 api/_lib/handlers.js    shared booking logic (also used by the dev server)
 api/_lib/google.js      Google Calendar + Gmail API, via plain fetch
 api/_lib/mailer.js      picks the transport: Gmail API or Gmail SMTP
@@ -278,7 +278,7 @@ scripts/google-auth.mjs one-time Google connection helper
 |---|---|
 | Phone, WhatsApp, email | `CONFIG` at the top of `src/main.js`, then `npm run build` |
 | Email wording | `api/_lib/email.js` |
-| Studio hours or slot length | `OPEN_HOUR` / `CLOSE_HOUR` / `SLOT_MIN` — **in both** `src/booking.js` and `api/_lib/handlers.js`, then rebuild |
+| Studio hours or slot length | `OPEN_HOUR` / `CLOSE_HOUR` / `SLOT_MIN`, **in both** `src/booking.js` and `api/_lib/handlers.js`, then rebuild |
 | The numbers (30+, 100+, 60+) | `data-target="…"` in `index.html` |
 | Service text, FAQ, team bios | directly in `index.html` |
 | Colours and type | the token block at the top of `assets/styles.css` |
@@ -290,5 +290,5 @@ scripts/google-auth.mjs one-time Google connection helper
 
 three.js (3D), GSAP + ScrollTrigger (scroll animation), Lenis (smooth scroll),
 esbuild (bundler), nodemailer (SMTP). The Google integration uses plain `fetch`
-— no SDK. `@napi-rs/canvas` and `ffmpeg-static` are only used by
+with no SDK. `@napi-rs/canvas` and `ffmpeg-static` are only used by
 `npm run video` and never reach the browser.

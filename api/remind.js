@@ -1,10 +1,10 @@
-/* GET /api/remind — the 15-minute nudge.
+/* GET /api/remind: the 15-minute nudge.
 
    Vercel Cron calls this every five minutes (see vercel.json). It looks for
    calls starting inside the next REMIND_BEFORE_MIN window, emails whoever
    has not been reminded yet, and crosses them off.
 
-   Needs somewhere to have written the booking down — see _lib/store.js. With
+   Needs somewhere to have written the booking down. See _lib/store.js. With
    no store this does nothing and says so; the 15-minute alarm inside the
    calendar attachment still fires on the client's own device.
 

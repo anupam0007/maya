@@ -1,5 +1,5 @@
 /* ==========================================================================
-   store.js — where bookings live between being made and being reminded.
+   store.js: where bookings live between being made and being reminded.
 
    A serverless function has no memory and no writable disk, so a cron job
    can only remind people about bookings that were written down somewhere.
@@ -7,7 +7,7 @@
 
      kv    Vercel KV / Upstash Redis, if KV_REST_API_URL + KV_REST_API_TOKEN
            are present. Add the integration in the Vercel dashboard and this
-           lights up on its own — no code change.
+           lights up on its own, with no code change.
      file  a JSON file. Works locally; on Vercel the disk is read-only, so
            this is dev only.
      none  nothing is written, and the cron has nothing to send. The 15-minute

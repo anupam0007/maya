@@ -1,5 +1,5 @@
 /* ==========================================================================
-   google-auth.mjs — one-time helper that gets your GOOGLE_REFRESH_TOKEN.
+   google-auth.mjs: one-time helper that gets your GOOGLE_REFRESH_TOKEN.
 
        npm run auth
 

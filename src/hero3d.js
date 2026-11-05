@@ -1,10 +1,10 @@
 /* ==========================================================================
-   hero3d.js — the hero scene.
+   hero3d.js: the hero scene.
 
    A slow-turning carousel of the six things the studio actually makes.
    Every card is readable, every card is hoverable, every card is a door
    into the booking form. Warm studio light, paper background showing
-   through — no dark void, no abstract particles you can't act on.
+   through. No dark void, no abstract particles you can't act on.
    ========================================================================== */
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
@@ -218,7 +218,7 @@ export function createHero({ canvas, tipEl, reduce, onPick }) {
     }
     updateTip(state.hovered);
 
-    // spin: drag inertia, then idle drift — slower while a card is hovered
+    // spin: drag inertia, then idle drift, slower while a card is hovered
     if (!state.drag) {
       state.spin += state.vel;
       state.vel *= 0.94;

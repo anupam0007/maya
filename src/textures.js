@@ -1,5 +1,5 @@
 /* ==========================================================================
-   textures.js — the artwork painted onto the 3D hero cards.
+   textures.js: the artwork painted onto the 3D hero cards.
    Each painter draws a readable, recognisable preview of one deliverable
    in the studio palette. 768 x 1024 (3:4), matching the card geometry.
    ========================================================================== */
@@ -71,7 +71,7 @@ export const PAINTERS = {
     x.font = `italic 400 86px ${DISPLAY}`; x.fillStyle = C.clay;
     x.fillText('our oven.', 52, 352);
     x.fillStyle = C.ink2; x.font = `400 24px ${SANS}`;
-    x.fillText('Cakes, bakes and coffee —', 56, 404);
+    x.fillText('Cakes, bakes and coffee,', 56, 404);
     x.fillText('delivered across Bengaluru.', 56, 438);
 
     // CTA
@@ -105,7 +105,7 @@ export const PAINTERS = {
     x.fillStyle = C.paperHi; x.font = `italic 400 44px ${DISPLAY}`;
     x.fillText('Kavya Bakes', 54, 930);
     x.fillStyle = 'rgba(251,247,240,.6)'; x.font = `400 20px ${SANS}`;
-    x.fillText('Jayanagar  ·  Open 8am – 9pm', 54, 968);
+    x.fillText('Jayanagar  ·  Open 8am to 9pm', 54, 968);
     tooth(x);
   },
 
@@ -263,19 +263,19 @@ export const PAINTERS = {
     x.fillStyle = C.paperHi; x.fillRect(0, 0, W, H);
     const cw = W / 2, ch = H / 2.4;
 
-    // tile 1 — mark on forest
+    // tile 1: mark on forest
     x.fillStyle = C.forest; x.fillRect(0, 0, cw - 2, ch - 2);
     x.strokeStyle = C.paperHi; x.lineWidth = 14;
     x.beginPath(); x.arc(cw / 2, ch / 2, 74, 0, 7); x.stroke();
     x.fillStyle = C.sand; x.beginPath(); x.arc(cw / 2, ch / 2, 24, 0, 7); x.fill();
 
-    // tile 2 — mark on sand
+    // tile 2: mark on sand
     x.fillStyle = C.sand; x.fillRect(cw, 0, cw, ch - 2);
     x.fillStyle = C.forest; x.beginPath();
     x.moveTo(cw + cw / 2 - 72, ch / 2 + 62); x.lineTo(cw + cw / 2, ch / 2 - 68);
     x.lineTo(cw + cw / 2 + 72, ch / 2 + 62); x.closePath(); x.fill();
 
-    // tile 3 — wordmark
+    // tile 3: wordmark
     x.fillStyle = C.paperLo; x.fillRect(0, ch, cw - 2, ch - 2);
     x.fillStyle = C.ink; x.font = `italic 400 62px ${DISPLAY}`; x.textAlign = 'center';
     x.fillText('Kavya', cw / 2, ch + ch / 2 + 6);
@@ -283,7 +283,7 @@ export const PAINTERS = {
     x.fillText('B A K E H O U S E', cw / 2, ch + ch / 2 + 44);
     x.textAlign = 'left';
 
-    // tile 4 — swatches
+    // tile 4: swatches
     x.fillStyle = C.clay; x.fillRect(cw, ch, cw, ch - 2);
     const sw = [C.paperHi, C.sandHi, C.forest, C.dark];
     sw.forEach((c, i) => {

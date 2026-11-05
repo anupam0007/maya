@@ -1,5 +1,5 @@
 /* ==========================================================================
-   dev-server.mjs — the local preview.
+   dev-server.mjs: the local preview.
 
    Serves the static site and runs the same booking handlers the Vercel
    functions use, so what you click locally is what ships.
@@ -28,7 +28,7 @@ try {
     if (!(m[1] in process.env)) process.env[m[1]] = v;
   }
   console.log('  · loaded .env');
-} catch { /* no .env — demo mode */ }
+} catch { /* no .env, demo mode */ }
 
 const { getSlots, postBook, rateLimited, capability, capabilityNote, healthBody } = await import('../api/_lib/handlers.js');
 const { verifyTransport, mailMode } = await import('../api/_lib/mailer.js');
@@ -89,7 +89,7 @@ async function serveStatic(req, res, pathname) {
       } catch { /* fall through to 404 */ }
     }
     res.writeHead(404, { 'content-type': 'text/html; charset=utf-8' });
-    res.end('<h1 style="font:600 20px system-ui;padding:40px">404 — not found</h1>');
+    res.end('<h1 style="font:600 20px system-ui;padding:40px">404 not found</h1>');
     return;
   }
   if (stat.isDirectory()) return serveStatic(req, res, rel + '/index.html');
@@ -146,7 +146,7 @@ const server = http.createServer(async (req, res) => {
       const payload = await readBody(req);
       const { status, body } = await postBook(payload);
       if (body && body.ok) {
-        console.log(`  ✓ booking  ${payload.name} — ${payload.date} ${payload.time}  [${body.mode}]`);
+        console.log(`  ✓ booking  ${payload.name}: ${payload.date} ${payload.time}  [${body.mode}]`);
         if (body.note) console.log(`    ${body.note}`);
       }
       return json(res, status, body);
@@ -181,7 +181,7 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, async () => {
   const cap = capability();
   console.log('');
-  console.log('  \x1b[1mMaya Studio\x1b[0m — local preview');
+  console.log('  \x1b[1mMaya Studio\x1b[0m local preview');
   console.log('');
   console.log(`  \x1b[36mhttp://localhost:${PORT}\x1b[0m`);
   console.log('');

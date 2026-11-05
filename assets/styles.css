@@ -47,7 +47,7 @@
 }
 
 /* ==========================================================================
-   MAYA STUDIO — "Atelier" design system
+   MAYA STUDIO: "Atelier" design system
    Warm editorial luxe: paper, clay, forest, sand. No blue, no neon.
    --------------------------------------------------------------------------
    1. Tokens   2. Reset   3. Type   4. Chrome   5. Hero   6. Numbers
@@ -126,7 +126,7 @@ ul,ol{ list-style:none; padding:0; }
 
 .ital{ font-style:italic; font-variation-settings:'SOFT' 40,'WONK' 1,'opsz' 110; }
 
-/* Highlight — only on words deliberately marked in the HTML */
+/* Highlight: only on words deliberately marked in the HTML */
 .hl{ position:relative; display:inline-block; z-index:0; }
 .hl::after{
   content:''; position:absolute; left:-.06em; right:-.06em; bottom:.05em; height:.3em;
@@ -293,7 +293,7 @@ ul,ol{ list-style:none; padding:0; }
   font-size:clamp(2.9rem,min(9.4vw,12.6vh),8.6rem); line-height:.9; letter-spacing:-.042em;
   max-width:16ch;
 }
-/* the slide-up mask — deep enough for Fraunces descenders, pulled back so
+/* the slide-up mask, deep enough for Fraunces descenders, pulled back so
    the lines still sit tight against each other */
 .hero-title .line{ display:block; overflow:hidden; padding-bottom:.2em; margin-bottom:-.17em; }
 .hero-title .line-in{ display:block; }

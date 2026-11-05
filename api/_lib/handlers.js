@@ -1,8 +1,8 @@
 /* ==========================================================================
-   handlers.js — the booking logic, shared by the Vercel functions and the
+   handlers.js: the booking logic, shared by the Vercel functions and the
    local dev server so both behave identically.
 
-   Studio hours: Monday–Saturday, 09:00–18:00 IST, in 30-minute slots.
+   Studio hours: Monday to Saturday, 09:00 to 18:00 IST, in 30-minute slots.
    These constants must stay in step with src/booking.js.
 
    There are three possible states, decided purely by which environment
@@ -17,7 +17,7 @@
                Real email to both people carrying your fixed Meet room.
                No calendar event, so slots are not de-duplicated.
 
-     "preview" Neither. Nothing is sent and NO link is invented — the two
+     "preview" Neither. Nothing is sent and NO link is invented. The two
                emails are written to .data/outbox/ so you can read them.
    ========================================================================== */
 import fs from 'node:fs';
@@ -103,16 +103,16 @@ export function healthBody() {
 /** A one-line description for the dev-server banner and /api/health. */
 export function capabilityNote() {
   const c = capability();
-  if (c.how === 'google') return 'Google connected — a new Meet link per booking, real invites, real email.';
-  if (c.how === 'smtp') return `Gmail SMTP connected as ${GMAIL_USER} — real email to both, using your fixed MEET_LINK.`;
+  if (c.how === 'google') return 'Google connected: a new Meet link per booking, real invites, real email.';
+  if (c.how === 'smtp') return `Gmail SMTP connected as ${GMAIL_USER}: real email to both, using your fixed MEET_LINK.`;
   const missing = [];
   if (!c.canMail) missing.push('an email transport (GOOGLE_* or GMAIL_APP_PASSWORD)');
   if (!c.canMeet) missing.push('a Meet link source (GOOGLE_* or MEET_LINK)');
-  return `Preview mode — missing ${missing.join(' and ')}. Nothing is sent and no link is invented.`;
+  return `Preview mode: missing ${missing.join(' and ')}. Nothing is sent and no link is invented.`;
 }
 
 /* ==========================================================================
-   Preview store — only used when nothing is configured, so the flow can
+   Preview store: only used when nothing is configured, so the flow can
    still be clicked through. On Vercel the filesystem is read-only outside
    /tmp, so every write here is best-effort.
    ========================================================================== */
@@ -171,7 +171,7 @@ export async function getSlots(date) {
     });
     return { status: 200, body: { ok: true, date, taken, mode: 'live' } };
   } catch (err) {
-    // Never block the grid because the calendar hiccuped — show it open and
+    // Never block the grid because the calendar hiccuped. Show it open and
     // let the booking itself be the thing that fails loudly.
     console.error('[slots] freeBusy failed:', err.message);
     return { status: 200, body: { ok: true, date, taken: [], mode: 'live', degraded: true } };
@@ -204,9 +204,9 @@ export async function postBook(payload = {}) {
 
   const start = slotInstant(date, time);
   const end = new Date(start.getTime() + SLOT_MIN * 60000);
-  if (start.getTime() < Date.now() + LEAD_MIN * 60000) return bad('That time has passed — please pick a later slot.');
+  if (start.getTime() < Date.now() + LEAD_MIN * 60000) return bad('That time has passed. Please pick a later slot.');
   if (date > addDays(istToday(), DAYS_AHEAD)) return bad('That date is too far ahead.');
-  if (summary.length > 4000 || message.length > 2000) return bad('That is a lot of detail — please shorten it a little.');
+  if (summary.length > 4000 || message.length > 2000) return bad('That is a lot of detail. Please shorten it a little.');
 
   const whenLong = prettyLong(date, time);
   const stamp = `${date}-${time.replace(':', '')}`;
@@ -216,7 +216,7 @@ export async function postBook(payload = {}) {
   if (!cap.live) {
     const list = readBookings();
     if (list.some((b) => b.date === date && b.time === time)) {
-      return bad('Sorry — someone just took that slot. Please pick another.');
+      return bad('Sorry, someone just took that slot. Please pick another.');
     }
 
     const mails = {
@@ -236,8 +236,8 @@ export async function postBook(payload = {}) {
         startISO: start.toISOString(), endISO: end.toISOString(),
         emailed: { client: false, owner: false },
         note: file
-          ? `Not sent — email is not connected yet. Both messages were written to ${path.relative(process.cwd(), path.dirname(file))} so you can open them in a browser.`
-          : 'Not sent — email is not connected yet.',
+          ? `Not sent: email is not connected yet. Both messages were written to ${path.relative(process.cwd(), path.dirname(file))} so you can open them in a browser.`
+          : 'Not sent: email is not connected yet.',
         reason: capabilityNote(),
       },
     };
@@ -253,7 +253,7 @@ export async function postBook(payload = {}) {
       // last-second double-booking guard
       const busy = await freeBusy(start, end);
       if (busy.some((b) => start < b.end && end > b.start)) {
-        return bad('Sorry — someone just took that slot. Please pick another.');
+        return bad('Sorry, someone just took that slot. Please pick another.');
       }
 
       const description = [
@@ -271,7 +271,7 @@ export async function postBook(payload = {}) {
 
       const event = await createEvent({
         start, end,
-        summary: `Maya Studio × ${name} — intro call`,
+        summary: `Maya Studio × ${name}: intro call`,
         description,
         attendees: [email, OWNER_EMAIL],
       });
@@ -287,7 +287,7 @@ export async function postBook(payload = {}) {
     };
   }
 
-  /* The client never receives the room URL itself — only a sealed link
+  /* The client never receives the room URL itself, only a sealed link
      that the server will open for them shortly before the call. */
   let joinLink = '';
   try { joinLink = joinUrl({ date, time, name, email, meetLink }); }

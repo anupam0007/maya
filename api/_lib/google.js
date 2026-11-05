@@ -1,16 +1,16 @@
 /* ==========================================================================
-   google.js — everything that talks to Google.
+   google.js: everything that talks to Google.
 
    One OAuth refresh token covers both jobs:
-     · Calendar  — create the event and mint a real Google Meet link
-     · Gmail     — send the branded confirmation emails
+     · Calendar  : create the event and mint a real Google Meet link
+     · Gmail     : send the branded confirmation emails
 
    Required env (see .env.example):
      GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN
    Optional:
      OWNER_EMAIL (default anupamgowda1999@gmail.com), CALENDAR_ID (default primary)
 
-   With none of them set the site runs in demo mode — see handlers.js.
+   With none of them set the site runs in demo mode. See handlers.js.
    Zero dependencies: plain fetch against the REST APIs.
    ========================================================================== */
 

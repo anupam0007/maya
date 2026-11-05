@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Join your call — Maya Studio</title>
+<title>Join your call | Maya Studio</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#F2ECE1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23F2ECE1'/%3E%3Cpath d='M14 46V18l18 20 18-20v28' fill='none' stroke='%23C0543A' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='43' r='3.6' fill='%23D2A24C'/%3E%3C/svg%3E">
@@ -100,20 +100,20 @@
         whenBlock(d) +
         (d.meetLink
           ? '<a class="btn btn-primary btn-lg" href="' + esc(d.meetLink) + '" target="_blank" rel="noopener">Join the Google Meet</a>'
-          : '<p style="margin-top:20px;color:var(--clay)">The link is missing — please message us on WhatsApp.</p>') +
+          : '<p style="margin-top:20px;color:var(--clay)">The link is missing. Please message us on WhatsApp.</p>') +
         '</div>' +
         '<div class="jc-foot">Trouble joining? <a href="https://wa.me/917204215343">Message us on WhatsApp</a></div>';
       return;
     }
 
-    /* early — count down, then re-check with the server */
+    /* early: count down, then re-check with the server */
     out.innerHTML =
       '<div class="jc-body"><div class="jc-badge wait"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>' +
       '<h1>You’re a little early' + (d.name ? ', ' + esc(String(d.name).split(' ')[0]) : '') + '.</h1>' +
-      '<p>Your booking time is below. Please come back and open this link then — it unlocks ' + d.opensBeforeMin + ' minutes before the call starts.</p>' +
+      '<p>Your booking time is below. Please come back and open this link then. It unlocks ' + d.opensBeforeMin + ' minutes before the call starts.</p>' +
       whenBlock(d) +
       '<div class="count" id="cd"></div>' +
-      '<p style="font-size:.84rem;color:var(--ink-3);margin-top:14px">This page unlocks on its own — you can leave it open.</p>' +
+      '<p style="font-size:.84rem;color:var(--ink-3);margin-top:14px">This page unlocks on its own, so you can leave it open.</p>' +
       '</div>' +
       '<div class="jc-foot">Need to change the time? <a href="https://wa.me/917204215343">Message us on WhatsApp</a></div>';
 
